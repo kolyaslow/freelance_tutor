@@ -1,3 +1,7 @@
-from fastapi_users.authentication import BearerTransport
+import os
+from dotenv import load_dotenv
 
-bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
+load_dotenv()
+
+SECRET_KEY_BY_JWT = os.environ.get('SECRET_KEY_BY_JWT')
+SECRET_KEY_BY_UserManager = os.environ.get('SECRET_KEY_BY_UserManager')
