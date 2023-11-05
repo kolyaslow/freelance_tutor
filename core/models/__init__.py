@@ -4,4 +4,4 @@ __all__ = [
 ]
 
 from .base import Base
-from core.models.models import User
+from core.models.user import User
