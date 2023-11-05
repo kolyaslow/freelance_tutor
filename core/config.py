@@ -14,7 +14,7 @@ DB_NAME = os.environ.get('DB_NAME')
 
 
 class DbSettings(BaseModel):
-    usl: str = f"postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    url: str = f"postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
     echo: bool = False
 

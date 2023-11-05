@@ -1,4 +1,4 @@
-from user.views import router as user_router
+from .user.views import router as user_router
 from fastapi import APIRouter
 
 router = APIRouter()

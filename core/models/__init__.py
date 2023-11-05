@@ -1,5 +1,7 @@
 __all__ = [
-    'Base'
+    'Base',
+    'User',
 ]
 
 from .base import Base
+from core.models.models import User

@@ -5,8 +5,10 @@ from sqlalchemy import String, Boolean
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column
 
-from core.models import Base
 from core import db_helper
+
+from core.models.base import Base
+
 
 
 class User(SQLAlchemyBaseUserTable[int], Base):

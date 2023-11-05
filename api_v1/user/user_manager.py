@@ -4,7 +4,7 @@ from typing import Optional
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin
 
-from .models import User, get_user_db
+from core.models.models import User, get_user_db
 from .config import SECRET_KEY_BY_UserManager
 
 
