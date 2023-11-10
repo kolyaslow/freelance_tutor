@@ -25,6 +25,9 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     is_verified: Mapped[bool] = mapped_column(
         Boolean, default=False, nullable=False
     )
+    role: Mapped[str] = mapped_column(
+        String(length=9), nullable=False,
+    )
 
 
 async def get_user_db(session: AsyncSession = Depends(db_helper.session_dependency)):
