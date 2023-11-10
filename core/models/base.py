@@ -1,15 +1,21 @@
+from sqlalchemy import Integer
 from sqlalchemy.orm import (
     DeclarativeBase,
     declared_attr,
-    Mapped,
     mapped_column,
 )
 
 
 class Base(DeclarativeBase):
     __abstract__ = True
+    primary_key_id: bool = True
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    @declared_attr
+    def id(cls):
+        if cls.primary_key_id:
+            return mapped_column(Integer, primary_key=True)
+        else:
+            return None
 
     @declared_attr.directive
     def __tablename__(cls) -> str:
