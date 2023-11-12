@@ -4,6 +4,14 @@ from starlette.responses import JSONResponse
 from .schemas import CreateSubject
 from core.models import Subject
 
+
+async def get_subject(
+        subject_name: str,
+        session: AsyncSession,
+) -> Subject | None:
+    return await session.get(Subject, subject_name)
+
+
 async def create_subject(
         session: AsyncSession,
         subject_in: CreateSubject,
@@ -16,9 +24,7 @@ async def create_subject(
 
 async def delete_subject(
     session: AsyncSession,
-    subject_name: CreateSubject,
-) -> JSONResponse:
-    subject = Subject(**subject_name.model_dump())
+    subject: Subject,
+) -> None:
     await session.delete(subject)
     await session.commit()
-    return JSONResponse(content={"message": "Entry delete successfully"}, status_code=201)
