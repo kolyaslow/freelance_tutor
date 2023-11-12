@@ -1,4 +1,3 @@
-import uuid
 from typing import Optional
 
 from fastapi import Depends, Request
@@ -9,7 +8,7 @@ from .config import SECRET_KEY_BY_UserManager
 
 
 
-class UserManager(IntegerIDMixin, BaseUserManager[User, uuid.UUID]):
+class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     reset_password_token_secret = SECRET_KEY_BY_UserManager
     verification_token_secret = SECRET_KEY_BY_UserManager
 

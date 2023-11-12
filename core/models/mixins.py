@@ -3,7 +3,6 @@ from typing import TYPE_CHECKING
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import declared_attr, Mapped, mapped_column, relationship
 
-
 if TYPE_CHECKING:
     from .user import User
     from .subject import Subject
@@ -13,6 +12,7 @@ class BaseMixin:
     _back_populates: str | None = None
     _field_fk: str = 'id'
     _table_name: str
+
     @classmethod
     def _create_fk(cls)-> Mapped[int | str]:
         return mapped_column(ForeignKey(f'{cls._table_name}.{cls._field_fk}'))
