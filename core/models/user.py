@@ -1,14 +1,18 @@
+from typing import TYPE_CHECKING
+
 from fastapi import Depends
 from fastapi_users.db import SQLAlchemyUserDatabase
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
 from sqlalchemy import String, Boolean
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 
 from core import db_helper
-
 from core.models.base import Base
 
+if TYPE_CHECKING:
+    from .subject_user_association import SubjectUserAssociation
 
 
 class User(SQLAlchemyBaseUserTable[int], Base):
@@ -28,6 +32,8 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     role: Mapped[str] = mapped_column(
         String(length=9), nullable=False,
     )
+
+    subject_details: Mapped[list['SubjectUserAssociation']] = relationship(back_populates='user')
 
 
 async def get_user_db(session: AsyncSession = Depends(db_helper.session_dependency)):
