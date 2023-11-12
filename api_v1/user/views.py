@@ -11,6 +11,7 @@ fastapi_users = FastAPIUsers[User, int](
     [auth_backend],
 )
 
+
 router = APIRouter()
 
 router.include_router(
