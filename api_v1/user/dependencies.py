@@ -9,4 +9,7 @@ class CurrentUser():
              superuser=True,
          )
 
+    def get_current_user(self):
+        return fastapi_users.current_user()
+
 current_user = CurrentUser()

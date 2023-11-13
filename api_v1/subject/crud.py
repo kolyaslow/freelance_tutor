@@ -1,4 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
+from sqlalchemy.engine import Result
 from fastapi.responses import JSONResponse
 from fastapi import status
 
@@ -29,3 +31,10 @@ async def create_subject(
 async def delete_subject(session: AsyncSession, subject: Subject,) -> None:
     await session.delete(subject)
     await session.commit()
+
+
+async def get_all_subjects(session:AsyncSession) -> list['Subject']:
+    stmt = select(Subject)
+    result: Result = await session.execute(stmt)
+    subjects = result.scalars().all()
+    return list(subjects)
