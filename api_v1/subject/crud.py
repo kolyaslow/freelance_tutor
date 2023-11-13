@@ -20,12 +20,12 @@ async def create_subject(
     subject = Subject(**subject_in.model_dump())
     session.add(subject)
     await session.commit()
-    return JSONResponse(content={"message": "Entry created successfully"}, status_code=status.HTTP_201_CREATED)
+    return JSONResponse(
+        content={"message": "Entry created successfully"},
+        status_code=status.HTTP_201_CREATED
+    )
 
 
-async def delete_subject(
-    session: AsyncSession,
-    subject: Subject,
-) -> None:
+async def delete_subject(session: AsyncSession, subject: Subject,) -> None:
     await session.delete(subject)
     await session.commit()
