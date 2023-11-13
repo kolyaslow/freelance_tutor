@@ -12,7 +12,7 @@ from core import db_helper
 from core.models.base import Base
 
 if TYPE_CHECKING:
-    from .subject_user_association import SubjectUserAssociation
+    from .subject import Subject
 
 
 class User(SQLAlchemyBaseUserTable[int], Base):
@@ -33,7 +33,10 @@ class User(SQLAlchemyBaseUserTable[int], Base):
         String(length=9), nullable=False,
     )
 
-    subject_details: Mapped[list['SubjectUserAssociation']] = relationship(back_populates='user')
+    subjects: Mapped[list['Subject']] = relationship(
+        back_populates='users',
+        secondary='subject_user_association',
+    )
 
 
 async def get_user_db(session: AsyncSession = Depends(db_helper.session_dependency)):
