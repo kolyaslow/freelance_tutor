@@ -1,5 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from starlette.responses import JSONResponse
+from fastapi.responses import JSONResponse
+from fastapi import status
 
 from .schemas import CreateSubject
 from core.models import Subject
@@ -19,7 +20,7 @@ async def create_subject(
     subject = Subject(**subject_in.model_dump())
     session.add(subject)
     await session.commit()
-    return JSONResponse(content={"message": "Entry created successfully"}, status_code=201)
+    return JSONResponse(content={"message": "Entry created successfully"}, status_code=status.HTTP_201_CREATED)
 
 
 async def delete_subject(
