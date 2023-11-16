@@ -3,9 +3,10 @@ from sqlalchemy import select
 from sqlalchemy.engine import Result
 from fastapi.responses import JSONResponse
 from fastapi import status
+from sqlalchemy.orm import selectinload
 
 from .schemas import CreateSubject
-from core.models import Subject
+from core.models import Subject, User
 
 
 async def get_subject(
@@ -13,7 +14,6 @@ async def get_subject(
         session: AsyncSession,
 ) -> Subject | None:
     return await session.get(Subject, subject_name)
-
 
 async def create_subject(
         session: AsyncSession,
@@ -38,3 +38,21 @@ async def get_all_subjects(session:AsyncSession) -> list['Subject']:
     result: Result = await session.execute(stmt)
     subjects = result.scalars().all()
     return list(subjects)
+
+async def get_users_by_subject(
+        session: AsyncSession,
+        subject_name: str,
+)-> list['User']:
+    stmt = (
+        select(User)
+        .where(Subject.name == subject_name)
+        .options(
+            selectinload(Subject.users),
+        )
+    )
+    orders = await session.scalars(stmt)
+
+    return list(orders)
+
+
+
