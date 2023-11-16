@@ -1,6 +1,4 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi.responses import JSONResponse
-from fastapi import status
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
