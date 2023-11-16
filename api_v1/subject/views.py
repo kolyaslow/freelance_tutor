@@ -20,9 +20,6 @@ async def create_subject(
         subject_in: CreateSubject,
         session: AsyncSession = Depends(db_helper.session_dependency),
 ) -> JSONResponse | HTTPException:
-    """Создает учебный предмет, который ведет репетитор, если предмет уже был созданн,
-    то выдаст ошибку о повторном создании, endpoint доступен только для superuser
-    """
     try:
         return await crud.create_subject(session, subject_in)
     except IntegrityError: #обработка повторного создания объекта
@@ -52,16 +49,16 @@ async def delete_subject(
 async def get_all_subjects(session: AsyncSession = Depends(db_helper.session_dependency)) -> list['Subject']:
     return await crud.get_all_subjects(session)
 
-# @router.get('/get_users/{subject_name}')
-# async def get_users_by_subject(
-#         subject: Subject = Depends(get_subject),
-#         session: AsyncSession = Depends(db_helper.session_dependency),
-# ) -> list['User']:
-#     """
-#     Getting all users for a specific subject
-#     """
-#     return await crud.get_users_by_subject(
-#         session=session,
-#         subject_name=subject.name
-#     )
+@router.get('/get_users/{subject_name}', dependencies=[Depends(current_user.get_current_user())])
+async def get_users_by_subject(
+        subject: Subject = Depends(get_subject),
+        session: AsyncSession = Depends(db_helper.session_dependency),
+) -> list[int]:
+    """
+    Getting all users for a specific subject
+    """
+    return await crud.get_users_by_subject(
+        session=session,
+        subject_name=subject.name
+    )
 
