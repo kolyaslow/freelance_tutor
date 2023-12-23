@@ -48,3 +48,14 @@ async def add_subjects_by_user(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=f"User have subject {subjects}"
         )
+
+
+@router.get('/get_subject')
+async def get_subjects_by_user(
+        session: AsyncSession = Depends(db_helper.session_dependency),
+        user: User = Depends(fastapi_users.current_user())
+) -> list[str]:
+    return await crud.get_subjects_by_user(
+        session=session,
+        user=user
+    )

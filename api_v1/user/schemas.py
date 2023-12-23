@@ -5,8 +5,8 @@ from pydantic import EmailStr
 
 
 class Role(str, Enum):
-    tutor = "репетитор"
-    customer = "заказчик"
+    tutor = "tutor"
+    customer = "customer"
 
 class UserRead(schemas.BaseUser[int]):
     role: Role

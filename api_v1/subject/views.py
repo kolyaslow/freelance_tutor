@@ -7,12 +7,12 @@ from core.db_helper import db_helper
 from ..user import current_user
 from . import crud
 from .schemas import CreateSubject, SubjectRead
-from core.models import Subject, User
+from core.models import Subject
 from .dependencies import get_subject
 from sqlalchemy.exc import IntegrityError
 
 
-router = APIRouter(tags=['Subject'])
+router = APIRouter()
 
 #create subject
 @router.post('/create_subject', dependencies=[Depends(current_user.get_superuser())], response_model=None)
