@@ -1,8 +1,14 @@
 from pydantic import BaseModel
 
-
-class CreateProfile(BaseModel):
+class BaseProfile(BaseModel):
     fullname: str | None = None
     description: str | None = None
+
+
+class CreateProfile(BaseProfile):
+    pass
+
+class ReadProfile(BaseProfile):
+    pass
 
 
