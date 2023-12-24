@@ -5,7 +5,7 @@ from .base import Base
 
 
 class Profile(Base):
-    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
+    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), unique=True)
 
     fullname: Mapped[str | None]
     description: Mapped[str | None]

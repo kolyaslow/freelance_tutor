@@ -47,6 +47,7 @@ async def delete_subject(
     dependencies=[Depends(current_user.get_current_user())]
 )
 async def get_all_subjects(session: AsyncSession = Depends(db_helper.session_dependency)) -> list['Subject']:
+    """Getting subjects that the tutor can choose from"""
     return await crud.get_all_subjects(session)
 
 @router.get('/get_users/{subject_name}', dependencies=[Depends(current_user.get_current_user())])
