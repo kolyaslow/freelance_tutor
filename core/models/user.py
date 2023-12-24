@@ -13,6 +13,8 @@ from core.models.base import Base
 
 if TYPE_CHECKING:
     from .subject import Subject
+    from .profile import Profile
+
 
 
 class User(SQLAlchemyBaseUserTable[int], Base):
@@ -37,6 +39,8 @@ class User(SQLAlchemyBaseUserTable[int], Base):
         back_populates='users',
         secondary='subject_user_association',
     )
+
+    profile: Mapped['Profile'] = relationship(back_populates="user")
 
 
 async def get_user_db(session: AsyncSession = Depends(db_helper.session_dependency)):
