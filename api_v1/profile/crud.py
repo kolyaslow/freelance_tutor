@@ -4,8 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from .schemas import CreateProfile
 
 
-if TYPE_CHECKING:
-    from core.models import Profile
+
+from core.models import Profile
 
 async def create_profile(
         session: AsyncSession,

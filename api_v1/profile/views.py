@@ -10,8 +10,8 @@ from .schemas import CreateProfile
 
 from core.db_helper import db_helper
 
-if TYPE_CHECKING:
-    from core.models import User, Profile
+
+from core.models import User, Profile
 
 router = APIRouter()
 

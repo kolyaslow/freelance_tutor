@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 
 
 from core.db_helper import db_helper
-from ..user import current_user
+from ..user.dependencies import current_user
 from . import crud
 from .schemas import CreateSubject, SubjectRead
 from core.models import Subject
