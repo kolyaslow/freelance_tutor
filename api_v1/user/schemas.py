@@ -4,6 +4,8 @@ from fastapi_users import schemas
 from pydantic import EmailStr
 
 
+from ..profile.schemas import ReadProfile
+
 class Role(str, Enum):
     tutor = "tutor"
     customer = "customer"
@@ -20,4 +22,8 @@ class UserCreate(schemas.CreateUpdateDictModel):
 
 
 class UserUpdate(schemas.BaseUserUpdate):
+    pass
+
+
+class UserProfile(UserRead, ReadProfile):
     pass

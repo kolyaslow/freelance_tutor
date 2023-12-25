@@ -2,11 +2,11 @@ from typing import TYPE_CHECKING
 
 from fastapi import HTTPException, status, Depends
 
-from api_v1.user import fastapi_users
+from .views import fastapi_users
 
 
-
-from core.models import User
+if TYPE_CHECKING:
+    from core.models import User
 
 
 async def checking_tutor(

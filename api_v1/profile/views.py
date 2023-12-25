@@ -1,4 +1,4 @@
-
+from typing import TYPE_CHECKING
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import Depends, APIRouter
@@ -7,8 +7,11 @@ from ..user.dependencies import checking_tutor
 from . import crud
 from .schemas import CreateProfile
 
-from core.models import User, Profile
+
 from core.db_helper import db_helper
+
+if TYPE_CHECKING:
+    from core.models import User, Profile
 
 router = APIRouter()
 

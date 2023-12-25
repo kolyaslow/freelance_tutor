@@ -1,10 +1,9 @@
-import asyncio
-
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from sqlalchemy.orm import selectinload
+from sqlalchemy.orm import selectinload, joinedload
 
 from core.models import User, Subject
+from .schemas import UserProfile
 
 
 
@@ -44,10 +43,13 @@ async def get_subjects_by_user(
     return subject_by_user
 
 
-# async def main():
-#     async with db_helper.session_factory() as session:
-#         await get_subjects_by_user(session=session, user_id=1)
-#
-#
-# if __name__ == '__main__':
-#     asyncio.run(main())
+async def show_user_with_profile(
+        session: AsyncSession,
+        user: User,
+) -> UserProfile:
+    stmt = (
+        select(User)
+        .options(joinedload(User.profile))
+        .where(User.id == user.id)
+    )
+    return  await session.execute(stmt)
