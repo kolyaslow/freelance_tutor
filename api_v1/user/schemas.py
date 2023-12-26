@@ -1,7 +1,7 @@
 from enum import Enum
 
 from fastapi_users import schemas
-from pydantic import EmailStr
+from pydantic import EmailStr, BaseModel
 
 
 from ..profile.schemas import ReadProfile
@@ -25,5 +25,7 @@ class UserUpdate(schemas.BaseUserUpdate):
     pass
 
 
-class UserProfile(UserRead, ReadProfile):
-    pass
+class UserProfile(BaseModel):
+    email: EmailStr
+    role: Role
+    profile: ReadProfile

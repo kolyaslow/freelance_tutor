@@ -5,8 +5,7 @@ from fastapi import HTTPException, status, Depends
 from .views import fastapi_users
 
 
-if TYPE_CHECKING:
-    from core.models import User
+from core.models import User
 
 
 async def checking_tutor(

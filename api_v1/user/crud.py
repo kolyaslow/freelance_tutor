@@ -1,6 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload, joinedload
+from sqlalchemy.engine import Result
 
 from core.models import User, Subject
 from .schemas import UserProfile
@@ -52,4 +53,6 @@ async def show_user_with_profile(
         .options(joinedload(User.profile))
         .where(User.id == user.id)
     )
-    return  await session.execute(stmt)
+    result: Result = await session.execute(stmt)
+    user_profile = result.scalar()
+    return  user_profile

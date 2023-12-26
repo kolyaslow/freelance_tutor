@@ -8,7 +8,7 @@ from core import db_helper
 from .user_manager import get_user_manager
 from .config import auth_backend
 from . import crud
-from .dependencies import current_user
+# from .dependencies import current_user
 
 from core.models import User
 
@@ -64,9 +64,9 @@ async def get_subjects_by_user(
 @router.get('/show_user_with_profile', response_model=UserProfile)
 async def show_user_with_profile(
         session: AsyncSession = Depends(db_helper.session_dependency),
-        user: User = Depends(current_user.get_current_user)
+        user: User = Depends(fastapi_users.current_user())
 ) -> UserProfile | None:
-    return crud.show_user_with_profile(
+    return await crud.show_user_with_profile(
         session=session,
         user=user
     )
