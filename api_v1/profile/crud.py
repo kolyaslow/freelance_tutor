@@ -24,6 +24,17 @@ async def create_profile(
     return profile
 
 
+async def get_profile(
+        user: User,
+        session: AsyncSession,
+) -> Profile:
+    stmt = select(Profile).where(Profile.user_id == user.id)
+    profile = await session.execute(stmt)
+    profile = profile.scalar()
+    return profile
+
+
+
 async def update_profile(
         session: AsyncSession,
         profile_update: ProfileUpdate,
@@ -32,16 +43,11 @@ async def update_profile(
 
 
 async def delete_profile(
-        user: User,
         session: AsyncSession,
+        profile: Profile,
 ) -> None:
-    stmt = select(Profile).where(Profile.user_id == user.id)
-    profile = await session.execute(stmt)
-    profile = profile.scalar()
-
-    if profile:
-        await session.delete(profile)
-        await session.commit()
+    await session.delete(profile)
+    await session.commit()
 
 
 

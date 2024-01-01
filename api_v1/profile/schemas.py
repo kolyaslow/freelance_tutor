@@ -14,3 +14,7 @@ class ReadProfile(BaseProfile):
 
 class ProfileUpdate(BaseProfile):
     pass
+
+
+class UpdateProfile(BaseProfile):
+    pass
