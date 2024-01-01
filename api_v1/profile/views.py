@@ -1,5 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import Depends, APIRouter, status, HTTPException
+from fastapi.responses import HTMLResponse
 
 from ..user.dependencies import checking_tutor
 from . import crud
@@ -23,12 +24,13 @@ async def create_profile(
     )
 
 
-@router.delete('/delete_profile', status_code=status.HTTP_204_NO_CONTENT)
+@router.delete('/delete_profile',  status_code=status.HTTP_204_NO_CONTENT)
 async def delete_profile(
         session: AsyncSession = Depends(db_helper.session_dependency),
         user: User = Depends(checking_tutor)
-) -> None | HTTPException:
-    return await crud.delete_profile(session=session, user=user)
+) -> None:
+    await crud.delete_profile(session=session, user=user)
+
 
 
 

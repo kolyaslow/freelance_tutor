@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from .schemas import CreateProfile
+from .schemas import CreateProfile, ProfileUpdate
 
 
 
@@ -24,19 +24,24 @@ async def create_profile(
     return profile
 
 
+async def update_profile(
+        session: AsyncSession,
+        profile_update: ProfileUpdate,
+) -> ProfileUpdate:
+    pass
+
+
 async def delete_profile(
         user: User,
         session: AsyncSession,
-) -> None | HTTPException:
+) -> None:
     stmt = select(Profile).where(Profile.user_id == user.id)
     profile = await session.execute(stmt)
     profile = profile.scalar()
+
     if profile:
         await session.delete(profile)
         await session.commit()
-        return None
 
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail=f'User {user.email} has no profile',
-    )
+
+
