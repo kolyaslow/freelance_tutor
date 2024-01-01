@@ -1,11 +1,6 @@
-from typing import TYPE_CHECKING
-
-from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from .schemas import CreateProfile, ProfileUpdate
-
-
+from .schemas import CreateProfile, UpdateProfile
 
 from core.models import Profile, User
 
@@ -34,12 +29,15 @@ async def get_profile(
     return profile
 
 
-
 async def update_profile(
         session: AsyncSession,
-        profile_update: ProfileUpdate,
-) -> ProfileUpdate:
-    pass
+        profile_update: UpdateProfile,
+        profile: Profile,
+) -> Profile:
+    for name, value in profile_update.model_dump(exclude_unset=True).items():
+        setattr(profile, name, value)
+    await session.commit()
+    return profile
 
 
 async def delete_profile(

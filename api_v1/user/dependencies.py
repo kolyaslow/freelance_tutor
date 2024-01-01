@@ -1,10 +1,6 @@
-from typing import TYPE_CHECKING
-
 from fastapi import HTTPException, status, Depends
 
 from .views import fastapi_users
-
-
 from core.models import User
 
 

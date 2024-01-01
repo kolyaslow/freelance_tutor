@@ -25,16 +25,27 @@ async def create_profile(
     )
 
 
-# @router.patch('/update_profile')
-# async def update_profile(
-#         profile_update: UpdateProfile,
-#         session: AsyncSession = Depends(db_helper.session_dependency),
-#         user: User = Depends(checking_tutor)
-# ) -> UpdateProfile:
+@router.patch(
+    '/update_profile',
+    dependencies=[Depends(checking_tutor)],
+    response_model=CreateProfile,
+)
+async def update_profile(
+        profile_update: UpdateProfile,
+        session: AsyncSession = Depends(db_helper.session_dependency),
+        profile: Profile = Depends(get_profile),
+) -> Profile:
+    return await crud.update_profile(
+        profile=profile,
+        profile_update=profile_update,
+        session=session,
+    )
 
-
-
-@router.delete('/delete_profile',  status_code=status.HTTP_204_NO_CONTENT, dependencies=[Depends(checking_tutor)])
+@router.delete(
+    '/delete_profile',
+    status_code=status.HTTP_204_NO_CONTENT,
+    dependencies=[Depends(checking_tutor)]
+)
 async def delete_profile(
         session: AsyncSession = Depends(db_helper.session_dependency),
         profile: Profile = Depends(get_profile),

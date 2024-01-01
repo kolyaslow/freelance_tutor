@@ -14,7 +14,7 @@ from sqlalchemy.exc import IntegrityError
 
 router = APIRouter()
 
-#create subject
+
 @router.post('/create_subject', dependencies=[Depends(current_user.get_superuser())], response_model=None)
 async def create_subject(
         subject_in: CreateSubject,
@@ -28,7 +28,7 @@ async def create_subject(
             detail=f"An element with the same {subject_in.name} already exists"
         )
 
-#delete subject
+
 @router.delete(
     '/delete_subject/{subject_name}',
     dependencies=[Depends(current_user.get_superuser())],
@@ -40,7 +40,7 @@ async def delete_subject(
 ) -> None:
     return await crud.delete_subject(session, subject)
 
-#get all subjects
+
 @router.get(
     '/all_subjects',
     response_model=list[SubjectRead],
