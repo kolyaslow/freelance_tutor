@@ -12,7 +12,7 @@ from .dependencies import get_profile
 router = APIRouter()
 
 
-@router.post('/create_profile', response_model=CreateProfile)
+@router.post('/create_profile', response_model=CreateProfile, status_code=status.HTTP_201_CREATED)
 async def create_profile(
     profile: CreateProfile,
     session: AsyncSession = Depends(db_helper.session_dependency),

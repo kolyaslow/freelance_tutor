@@ -1,7 +1,7 @@
-import pytest
 from httpx import AsyncClient
 
-@pytest.mark.asyncio
+
+# @pytest.mark.asyncio
 async def test_create_profile(client: AsyncClient, auth_tutor: str):
     profile =  {
         'fullname': 'Артемов Артем Артемович',
@@ -18,4 +18,3 @@ async def test_create_profile(client: AsyncClient, auth_tutor: str):
         'fullname': 'Артемов Артем Артемович',
         'description': 'Я артем',
     }
-

@@ -1,3 +1,4 @@
+import asyncio
 from typing import AsyncGenerator
 
 import pytest
@@ -9,7 +10,7 @@ from core.db_helper import db_helper
 from core.models import Base
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='session', autouse=True)
 async def prepare_database():
     """Deleting and creating tables for each test case."""
     if MODE == 'TEST':
@@ -25,6 +26,13 @@ async def client() -> AsyncGenerator[AsyncClient, None]:
     async with AsyncClient(app=app, base_url="http://test") as client:
         yield client
 
+
+@pytest.fixture(scope='session')
+def event_loop(request):
+    """Create an instance of the default event loop for each test case."""
+    loop = asyncio.get_event_loop_policy().new_event_loop()
+    yield loop
+    loop.close()
 
 #=======================User Authentication Unit=======================
 @pytest.fixture(scope="session")
@@ -47,31 +55,31 @@ def user_customer_data():
     return user_data
 
 
-@pytest.fixture
-async def register_tutor(user_tutor_data):
+@pytest.fixture(autouse=True, scope='session')
+async def register_tutor(client: AsyncClient, user_tutor_data):
     await client.post('/auth/register', json=user_tutor_data)
 
 
-@pytest.fixture
-async def register_customer(user_customer_data):
+@pytest.fixture(autouse=True, scope='session')
+async def register_customer(client: AsyncClient, user_customer_data):
     await client.post('/auth/register', json=user_customer_data)
 
 
-@pytest.mark.usefixtures('prepare_database')
+@pytest.mark.usefixtures('prepare_database', 'register_tutor')
 @pytest.fixture(scope='session')
 async def auth_tutor(client: AsyncClient, user_tutor_data) -> str:
 
-        response = await client.post("/auth/jwt/login", data={
-            "username": user_tutor_data["email"],
-            "password": user_tutor_data["password"],
-        })
+    response = await client.post("/auth/jwt/login", data={
+        "username": user_tutor_data["email"],
+        "password": user_tutor_data["password"],
+    })
 
-        token = response.json()['access_token']
+    token = response.json()['access_token']
 
-        return token
+    return token
 
 
-@pytest.mark.usefixtures('prepare_database')
+@pytest.mark.usefixtures('prepare_database', 'register_customer')
 @pytest.fixture(scope='session')
 async def auth_customer(client: AsyncClient, user_customer_data) -> str:
 
