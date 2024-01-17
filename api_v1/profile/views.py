@@ -1,4 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.exc import IntegrityError
 from fastapi import Depends, APIRouter, status, HTTPException
 
 from ..user.dependencies import checking_tutor
@@ -18,11 +19,17 @@ async def create_profile(
     session: AsyncSession = Depends(db_helper.session_dependency),
     user: User = Depends(checking_tutor),
 ) -> Profile:
-    return await crud.create_profile(
-        session=session,
-        user_id=user.id,
-        profile=profile,
-    )
+    try:
+        return await crud.create_profile(
+            session=session,
+            user_id=user.id,
+            profile=profile,
+        )
+    except IntegrityError:  # обработка повторного создания объекта
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"Профиль для пользователя с именем {user.email} уже создан"
+        )
 
 
 @router.patch(

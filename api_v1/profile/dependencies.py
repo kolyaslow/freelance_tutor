@@ -10,7 +10,7 @@ async def get_profile(
     user: User = Depends(checking_tutor),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ) -> Profile | HTTPException:
-    profile = await crud.get_profile(user=user, session=session)
+    profile = await crud.get_profile(user_id=user.id, session=session)
 
     if profile:
         return profile

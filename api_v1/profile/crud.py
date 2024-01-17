@@ -20,10 +20,10 @@ async def create_profile(
 
 
 async def get_profile(
-        user: User,
+        user_id: int,
         session: AsyncSession,
 ) -> Profile:
-    stmt = select(Profile).where(Profile.user_id == user.id)
+    stmt = select(Profile).where(Profile.user_id == user_id)
     profile = await session.execute(stmt)
     profile = profile.scalar()
     return profile
