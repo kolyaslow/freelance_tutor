@@ -35,17 +35,17 @@ class TestUpdateProfile(BaseRequestAPI):
             },
         ]
     )
-    async def test_by_tutor(self, auth_tutor, create_profile_by_tutor, profile_data):
+    async def test_by_tutor(self, auth_headers_tutor, create_profile_by_tutor, profile_data):
         """Проверка возможности обновления профиля для репетиторов."""
         self._json = profile_data
         response: Response = await self.request_by_api(
-            headers={"Authorization": f"Bearer {auth_tutor}"},
+            headers=auth_headers_tutor,
         )
         assert response.status_code == status.HTTP_200_OK
 
-    async def test_by_customer(self, auth_customer):
+    async def test_by_customer(self, auth_headers_customer):
         """Проверка недоступности API для ученика."""
         response: Response = await self.request_by_api(
-            headers={"Authorization": f"Bearer {auth_customer}"},
+            headers=auth_headers_customer,
         )
         assert response.status_code == status.HTTP_403_FORBIDDEN
