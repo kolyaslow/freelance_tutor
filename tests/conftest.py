@@ -4,10 +4,12 @@ from typing import AsyncGenerator, Any
 import pytest
 from httpx import AsyncClient, Response
 
+from api_v1.profile import crud
+from api_v1.profile.schemas import CreateProfile
 from main import app
 from core.config import MODE
 from core.db_helper import db_helper
-from core.models import Base
+from core.models import Base, Profile
 
 
 @pytest.fixture(scope='session', autouse=True)
@@ -94,6 +96,17 @@ async def auth_customer(client: AsyncClient, user_customer_data) -> str:
     return token
 
 
+@pytest.fixture(scope="session")
+def auth_headers_tutor(auth_tutor):
+    headers = {"Authorization": f"Bearer {auth_tutor}"}
+    return headers
+
+@pytest.fixture(scope="session")
+def auth_headers_customer(auth_customer):
+    headers = {"Authorization": f"Bearer {auth_customer}"}
+    return headers
+
+
 #==========================Request======================
 class BaseRequestAPI:
     """
@@ -103,14 +116,12 @@ class BaseRequestAPI:
 
     * **_url** -  адрес API ресурса
     * **_method** -  метод HTTP: GET, POST, DELETE...
-    * **_headers** - *(optional)* заголовки запроса
     * **_data** - *(optional)* данные тела запроса
     * **_json** - *(optional)* входные данные необходные для запроса в формати json
     """
 
     _url: str
     _method: str
-    # _headers: dict[str, Any] = None
     _data: dict[str, Any] = None
     _json: dict[str, Any] = None
 
@@ -132,5 +143,51 @@ class BaseRequestAPI:
 
 
 
+@pytest.fixture
+async def get_profile(
+        register_tutor: dict[str, Any],
+) -> Profile | None:
+    """Получения  профиля для репетитора"""
+    async with db_helper.session_factory() as session:
+        profile = await crud.get_profile(user_id=register_tutor['id'], session=session)
 
+    if profile:
+        return profile
+
+    return None
+
+
+#========================Работа с профилем на уровне БД=====================
+@pytest.fixture
+async def create_profile_by_tutor(
+    register_tutor: dict[str, Any],
+    get_profile: Profile | None,
+) -> None:
+    """Создание профиля репетитора перед тетом"""
+
+    profile = CreateProfile(
+        fullname='Петров Степан Стпанович',
+        description='Я Петров'
+    )
+
+    if not get_profile:
+        async with db_helper.session_factory() as session:
+            await crud.create_profile(
+                profile=profile,
+                session=session,
+                user_id=register_tutor['id'],
+            )
+
+
+@pytest.fixture
+async def delete_profile(
+    get_profile: Profile | None,
+) -> None:
+    """Удаление профиля репетитора перед тестом"""
+    if get_profile:
+        async with db_helper.session_factory() as session:
+            await crud.delete_profile(
+                profile=get_profile,
+                session=session,
+            )
 
