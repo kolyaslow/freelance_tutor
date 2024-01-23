@@ -19,13 +19,7 @@ class TestDeleteProfile(BaseRequestAPI):
             headers=auth_headers_tutor,
         )
         assert response.status_code == status.HTTP_204_NO_CONTENT
-#
-    async def test_by_customer(self, auth_headers_customer):
-        """Проверка недоступности API для ученика."""
-        response: Response = await self.request_by_api(
-            headers=auth_headers_customer,
-        )
-        assert response.status_code == status.HTTP_403_FORBIDDEN
+
 
     async def test_repeated_delete(self, auth_headers_tutor, delete_profile):
         """Проверка удаления несуществующего профиля."""

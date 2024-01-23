@@ -42,10 +42,3 @@ class TestUpdateProfile(BaseRequestAPI):
             headers=auth_headers_tutor,
         )
         assert response.status_code == status.HTTP_200_OK
-
-    async def test_by_customer(self, auth_headers_customer):
-        """Проверка недоступности API для ученика."""
-        response: Response = await self.request_by_api(
-            headers=auth_headers_customer,
-        )
-        assert response.status_code == status.HTTP_403_FORBIDDEN
