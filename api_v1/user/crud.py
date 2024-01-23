@@ -1,10 +1,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
-from sqlalchemy.orm import selectinload, joinedload
-from sqlalchemy.engine import Result
+from sqlalchemy import select, Result
+from sqlalchemy.orm import selectinload
 
-from core.models import User, Subject
-from .schemas import UserProfile
+from api_v1.profile.schemas import ReadProfile
+from core.models import User, Subject, Profile
 
 
 
@@ -44,15 +43,18 @@ async def get_subjects_by_user(
     return subject_by_user
 
 
-async def show_user_with_profile(
+async def show_all_tutor_by_subject(
         session: AsyncSession,
-        user: User,
-) -> UserProfile:
+        subject_name: str,
+):
     stmt = (
-        select(User)
-        .options(joinedload(User.profile))
-        .where(User.id == user.id)
+        select(Profile.fullname, Profile.description)
+        .join(User.subjects)
+        .join(User.profile)
+        .where(Subject.name == subject_name)
     )
+
     result: Result = await session.execute(stmt)
-    user_profile = result.scalar()
-    return  user_profile
+    profiles = result.fetchall()
+
+    return profiles

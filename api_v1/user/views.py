@@ -3,14 +3,13 @@ from fastapi_users import FastAPIUsers
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from .schemas import UserCreate, UserRead, UserProfile
 from core import db_helper
 from .user_manager import get_user_manager
 from .config import auth_backend
 from . import crud
-# from .dependencies import current_user
-
 from core.models import User
+from api_v1.profile.schemas import ReadProfile
+
 
 fastapi_users = FastAPIUsers[User, int](
     get_user_manager,
@@ -20,17 +19,6 @@ fastapi_users = FastAPIUsers[User, int](
 
 router = APIRouter()
 
-router.include_router(
-    fastapi_users.get_auth_router(auth_backend),
-    prefix="/auth/jwt",
-    tags=["auth"],
-)
-
-router.include_router(
-    fastapi_users.get_register_router(UserRead, UserCreate),
-    prefix="/auth",
-    tags=["auth"],
-)
 
 @router.post('/add_subject', status_code=status.HTTP_201_CREATED)
 async def add_subjects_by_user(
@@ -61,12 +49,43 @@ async def get_subjects_by_user(
         user=user
     )
 
-@router.get('/show_user_with_profile', response_model=UserProfile)
-async def show_user_with_profile(
+
+@router.get(
+    '/show_all_tutor_by_subject',
+    dependencies=[Depends(db_helper.session_dependency)],
+    response_model=list[ReadProfile]
+)
+async def show_all_tutor_by_subject(
+        subject_name: str,
         session: AsyncSession = Depends(db_helper.session_dependency),
-        user: User = Depends(fastapi_users.current_user())
-) -> UserProfile | None:
-    return await crud.show_user_with_profile(
+) -> list[ReadProfile]:
+    """Получение профилей репетиторов по определенному предмету"""
+    return await crud.show_all_tutor_by_subject(
         session=session,
-        user=user
+        subject_name=subject_name
     )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
