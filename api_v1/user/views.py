@@ -1,20 +1,14 @@
 from fastapi import APIRouter, Depends, status, HTTPException
-from fastapi_users import FastAPIUsers
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core import db_helper
-from .user_manager import get_user_manager
-from .config import auth_backend
+from .config import fastapi_users
 from . import crud
-from core.models import User
+from core.models import User, Subject
 from api_v1.profile.schemas import ReadProfile
-
-
-fastapi_users = FastAPIUsers[User, int](
-    get_user_manager,
-    [auth_backend],
-)
+from api_v1.subject.dependencies import get_subject
+from .dependencies import checking_tutor
 
 
 router = APIRouter()
@@ -24,12 +18,13 @@ router = APIRouter()
 async def add_subjects_by_user(
         subjects: list[str],
         session: AsyncSession = Depends(db_helper.session_dependency),
-        user: User = Depends(fastapi_users.current_user()),
+        user: User = Depends(checking_tutor),
 ) -> None:
+    """Добавление предмета в список, которые ведет репетитор """
     try:
         await crud.add_subjects_by_user(
             session=session,
-            user=user,
+            user_id=user.id,
             subjects=subjects,
         )
     except IntegrityError: #обработка повторного создания объекта
@@ -42,8 +37,9 @@ async def add_subjects_by_user(
 @router.get('/get_subject')
 async def get_subjects_by_user(
         session: AsyncSession = Depends(db_helper.session_dependency),
-        user: User = Depends(fastapi_users.current_user())
+        user: User = Depends(checking_tutor)
 ) -> list[str]:
+    """Получение репетитором всех предметов, которые он ведет"""
     return await crud.get_subjects_by_user(
         session=session,
         user=user
@@ -51,18 +47,18 @@ async def get_subjects_by_user(
 
 
 @router.get(
-    '/show_all_tutor_by_subject',
-    dependencies=[Depends(db_helper.session_dependency)],
+    '/show_all_tutor_by_subject/{subject_name}',
+    dependencies=[Depends(fastapi_users.current_user())],
     response_model=list[ReadProfile]
 )
 async def show_all_tutor_by_subject(
-        subject_name: str,
+        subject: Subject = Depends(get_subject),
         session: AsyncSession = Depends(db_helper.session_dependency),
 ) -> list[ReadProfile]:
     """Получение профилей репетиторов по определенному предмету"""
     return await crud.show_all_tutor_by_subject(
         session=session,
-        subject_name=subject_name
+        subject_name=subject.name
     )
 
 
