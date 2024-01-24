@@ -2,14 +2,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, Result
 from sqlalchemy.orm import selectinload
 
-from api_v1.profile.schemas import ReadProfile
 from core.models import User, Subject, Profile
 
 
 
 async def add_subjects_by_user(
         session: AsyncSession,
-        user: User,
+        user_id: int,
         subjects: list[str],
 ) -> None:
     stmt_subject = select(Subject).where(Subject.name.in_(subjects))
@@ -17,10 +16,10 @@ async def add_subjects_by_user(
 
     stmt_user = (
         select(User)
-        .where(User.id == user.id)
         .options(
             selectinload(User.subjects)
         )
+        .where(User.id == user_id)
     )
 
     user = await session.scalar(stmt_user)
@@ -33,6 +32,7 @@ async def get_subjects_by_user(
         session: AsyncSession,
         user: User,
 ) -> list[str]:
+    """Запрос на получение всех предметов у репетитора"""
     stmt = (
         select(Subject)
         .join(Subject.users)
