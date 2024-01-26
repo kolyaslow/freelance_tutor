@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "tutor-project"
+version = "0.1.0"
+description = ""
+authors = ["79146 <pysenkon@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.109.0"
+alembic = "^1.13.1"
+sqlalchemy = "^2.0.25"
+asyncpg = "^0.29.0"
+fastapi-users = "^12.1.2"
+
+[tool.poetry.group.dev.dependencies]
+httpx = "^0.26.0"
+pytest = "7.2.1"
+pytest-asyncio = "0.20.3"
+pytest-dotenv = "^0.5.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
