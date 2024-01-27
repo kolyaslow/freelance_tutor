@@ -7,6 +7,7 @@ from .base import Base
 if TYPE_CHECKING:
     from .user import User
 
+
 class Subject(Base):
     primary_key_id = False
 
@@ -15,7 +16,7 @@ class Subject(Base):
     __table_args__ = (
         CheckConstraint(
             name.in_(['mathematics', 'informatics', 'programming']),
-            name='name'
+            name='name',
         ),
     )
 

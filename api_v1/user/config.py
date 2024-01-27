@@ -12,8 +12,11 @@ from core.models.user import User, get_user_db
 if TYPE_CHECKING:
     from core.models import User
 
+log = logging.getLogger(__name__)
+
 load_dotenv()
 
+# move to settings
 # Setings Authentication backends
 SECRET_KEY_BY_JWT = os.environ.get('SECRET_KEY_BY_JWT')
 SECRET_KEY_BY_UserManager = os.environ.get('SECRET_KEY_BY_UserManager')
@@ -21,6 +24,7 @@ SECRET_KEY_BY_UserManager = os.environ.get('SECRET_KEY_BY_UserManager')
 bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
 
 def get_jwt_strategy() -> JWTStrategy:
+    # lifetime_seconds -> settings
     return JWTStrategy(secret=SECRET_KEY_BY_JWT, lifetime_seconds=3600)
 
 
@@ -29,15 +33,17 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     verification_token_secret = SECRET_KEY_BY_UserManager
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
+        # todo: logging
         print(f"User {user.id} has registered.")
+        log.info("User %s has reg..", user.id)
 
     async def on_after_forgot_password(
-        self, user: User, token: str, request: Optional[Request] = None
+        self, user: User, token: str, request: Optional[Request] = None,
     ):
         print(f"User {user.id} has forgot their password. Reset token: {token}")
 
     async def on_after_request_verify(
-        self, user: User, token: str, request: Optional[Request] = None
+        self, user: User, token: str, request: Optional[Request] = None,
     ):
         print(f"Verification requested for user {user.id}. Verification token: {token}")
 

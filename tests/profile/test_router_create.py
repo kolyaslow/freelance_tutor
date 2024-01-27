@@ -18,27 +18,17 @@ class TestCreateProfile(BaseRequestAPI):
     async def request_by_api(self, headers: dict[str, Any] = None) -> Response:
         return await super().request_by_api(headers=headers)
 
-    @pytest.mark.parametrize('profile_data',
+    @pytest.mark.parametrize('fullname',[ 
+        'Петров Степан Стпанович',
+        None,
+    ])
+    @pytest.mark.parametrize('description',
         [
-            {
-                'fullname': 'Петров Степан Стпанович',
-                'description': 'Я Петров'
-            },
-            {
-                'fullname': 'Петров Степан Стпанович',
-                'description': None,
-            },
-            {
-                'fullname': None,
-                'description': 'Я Петров'
-            },
-            {
-                'fullname': None,
-                'description': None,
-            },
+            'Я Петров'
+            None,
         ]
     )
-    async def test_by_tutor(self, auth_headers_tutor: dict[str, Any], profile_data, delete_profile):
+    async def test_by_tutor(self, fullname, description, delete_profile, auth_headers_tutor: dict[str, Any]):
         """Проверка на создание профиля для репетиторов"""
 
         self._json = profile_data

@@ -7,7 +7,9 @@ from core.models import Subject
 from core.db_helper import db_helper
 from . import crud
 
+
 async def get_subject(
+    # validate by AllowedValuesByName
     subject_name: Annotated[str, Path],
     session: AsyncSession = Depends(db_helper.session_dependency),
 ) -> Subject:

@@ -20,11 +20,13 @@ class TestShowTutorBySubject(BaseRequestAPI):
         "Проверка работы API для репетитора"
         response = await self.request_by_api(headers=auth_headers_tutor)
         assert response.status_code == status.HTTP_200_OK
+        # check response body
 
     async def test_by_customer(self, auth_headers_customer, add_subject_by_tutor):
         "Проверка работы API для ученика"
         response = await self.request_by_api(headers=auth_headers_customer)
         assert response.status_code == status.HTTP_200_OK
+        # check response body
 
     async def test_wrong_subject(self, auth_headers_tutor):
         """Проверка на передачу несуществующего предмета"""

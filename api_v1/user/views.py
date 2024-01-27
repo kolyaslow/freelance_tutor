@@ -16,9 +16,10 @@ router = APIRouter()
 
 @router.post('/add_subject', status_code=status.HTTP_201_CREATED)
 async def add_subjects_by_user(
-        subjects: list[str],
-        session: AsyncSession = Depends(db_helper.session_dependency),
-        user: User = Depends(checking_tutor),
+    # Validate using AllowedValuesByName
+    subjects: list[str],
+    session: AsyncSession = Depends(db_helper.session_dependency),
+    user: User = Depends(checking_tutor),
 ) -> None:
     """Добавление предмета в список, которые ведет репетитор """
     try:

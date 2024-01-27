@@ -6,9 +6,11 @@ from pydantic import EmailStr, BaseModel
 
 from ..profile.schemas import ReadProfile
 
+
 class Role(str, Enum):
     tutor = "tutor"
     customer = "customer"
+
 
 class UserRead(schemas.BaseUser[int]):
     role: Role
@@ -18,7 +20,6 @@ class UserCreate(schemas.CreateUpdateDictModel):
     email: EmailStr
     password: str
     role: Role
-
 
 
 class UserUpdate(schemas.BaseUserUpdate):

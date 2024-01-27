@@ -5,11 +5,13 @@ from api_v1.user import crud as crud_user
 from api_v1.subject.schemas import CreateSubject
 from core import db_helper
 
+
 @pytest.fixture(autouse=True, scope='session')
 async def create_subject():
     subject_in = CreateSubject(name='informatics')
 
     async with db_helper.session_factory() as session:
+        # return created
         await crud_subject.create_subject(session=session, subject_in=subject_in)
 
 
