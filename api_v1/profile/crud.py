@@ -25,7 +25,7 @@ async def get_profile(
 ) -> Profile:
     stmt = select(Profile).where(Profile.user_id == user_id)
     profile = await session.execute(stmt)
-    profile = profile.scalar()
+    profile = profile.scalar_one()
     return profile
 
 

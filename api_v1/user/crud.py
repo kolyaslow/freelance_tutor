@@ -31,16 +31,17 @@ async def add_subjects_by_user(
 async def get_subjects_by_user(
         session: AsyncSession,
         user: User,
-) -> list[str]:
+) -> Sequence[str]:
     """Запрос на получение всех предметов у репетитора"""
     stmt = (
-        select(Subject)
+        select(Subject.name)
         .join(Subject.users)
         .where(User.id == user.id)
     )
-    subjects = await session.scalars(stmt)
-    subject_by_user = [res.name for res in subjects]
-    return subject_by_user
+    subjects = await session.scalars(stmt).all()
+    # subject_by_user = [res.name for res in subjects]
+    # return subject_by_user
+    return list(subject_by_user)
 
 
 async def show_all_tutor_by_subject(

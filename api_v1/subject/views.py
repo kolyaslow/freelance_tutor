@@ -19,7 +19,7 @@ router = APIRouter()
 async def create_subject(
         subject_in: CreateSubject,
         session: AsyncSession = Depends(db_helper.session_dependency),
-) -> JSONResponse | HTTPException:
+) -> JSONResponse:
     try:
         return await crud.create_subject(session, subject_in)
     except IntegrityError: #обработка повторного создания объекта
@@ -50,6 +50,7 @@ async def get_all_subjects(session: AsyncSession = Depends(db_helper.session_dep
     """Getting subjects that the tutor can choose from"""
     return await crud.get_all_subjects(session)
 
+
 @router.get('/get_users/{subject_name}', dependencies=[Depends(current_user.get_current_user())])
 async def get_users_by_subject(
         subject: Subject = Depends(get_subject),
@@ -62,4 +63,3 @@ async def get_users_by_subject(
         session=session,
         subject_name=subject.name
     )
-

@@ -25,6 +25,7 @@ class DatabaseHelper:
     async def session_dependency(self) -> AsyncSession:
         async with self.session_factory() as session:
             yield session
+            # may be removed
             await session.close()
 
 

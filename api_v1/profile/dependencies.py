@@ -6,6 +6,7 @@ from core.models import User, Profile
 from ..user.dependencies import checking_tutor
 from . import crud
 
+
 async def get_profile(
     user: User = Depends(checking_tutor),
     session: AsyncSession = Depends(db_helper.session_dependency),
