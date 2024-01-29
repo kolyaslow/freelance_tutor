@@ -8,7 +8,8 @@ from main import app
 from core.config import MODE
 from core.db_helper import db_helper
 from core.models import Base, Profile
-from tests.common.user_authentication_fixture import (
+
+from tests.common import (
     user_customer_data,
     user_tutor_data,
     register_tutor,
@@ -17,11 +18,10 @@ from tests.common.user_authentication_fixture import (
     auth_headers_customer,
     auth_customer,
     auth_tutor,
-)
-from tests.common.fixture_profile_management import (
     get_profile,
     create_profile_by_tutor,
     delete_profile,
+    BaseRequestAPI,
 )
 
 
@@ -50,38 +50,6 @@ def event_loop(request):
     loop.close()
 
 
-
-#==========================Request======================
-class BaseRequestAPI:
-    """
-    Отправка запросов к API
-
-    **Parameters:**
-
-    * **_url** -  адрес API ресурса
-    * **_method** -  метод HTTP: GET, POST, DELETE...
-    * **_data** - *(optional)* данные тела запроса
-    * **_json** - *(optional)* входные данные необходные для запроса в формати json
-    """
-
-    _url: str
-    _method: str
-    _data: dict[str, Any] = None
-    _json: dict[str, Any] = None
-
-    async def request_by_api(self, headers: dict[str, Any] = None) -> Response:
-        async with AsyncClient(app=app, base_url="http://test") as client:
-            request = client.build_request(
-                url=self._url,
-                method=self._method,
-                data=self._data,
-                json=self._json,
-                headers=headers,
-            )
-
-            response: Response = await client.send(request)
-
-            return response
 
 
 
