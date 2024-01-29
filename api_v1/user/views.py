@@ -9,6 +9,7 @@ from core.models import User, Subject
 from api_v1.profile.schemas import ReadProfile
 from api_v1.subject.dependencies import get_subject
 from .dependencies import checking_tutor
+from ..subject.schemas import AllowedValuesByName
 
 
 router = APIRouter()
@@ -16,7 +17,7 @@ router = APIRouter()
 
 @router.post('/add_subject', status_code=status.HTTP_201_CREATED)
 async def add_subjects_by_user(
-        subjects: list[str],
+        subjects: list[AllowedValuesByName],
         session: AsyncSession = Depends(db_helper.session_dependency),
         user: User = Depends(checking_tutor),
 ) -> None:

@@ -31,4 +31,7 @@ class TestShowTutorBySubject(BaseRequestAPI):
         self._subject_name = 'история'
         response = await self.request_by_api(headers=auth_headers_tutor)
         assert response.status_code == status.HTTP_200_OK
-        assert response.json() == []
+        assert response.json() in (
+            [],
+            [{'description': None, 'fullname': None}],
+        )

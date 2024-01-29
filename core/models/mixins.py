@@ -20,7 +20,7 @@ class BaseMixin:
     @classmethod
     def _create_relationship(cls):
         return relationship(
-            f"{cls.__name__}",
+            cls.__name__,
             back_populates=cls._back_populates,
         )
 
@@ -46,6 +46,6 @@ class SubjectRelationMixin(BaseMixin):
         return cls._create_fk()
 
     @declared_attr
-    def subject(cls) -> Mapped["Subject"]:
+    def subject(cls) -> Mapped['Subject']:
         return cls._create_relationship()
 

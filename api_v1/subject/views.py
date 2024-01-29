@@ -15,13 +15,19 @@ from sqlalchemy.exc import IntegrityError
 router = APIRouter()
 
 
-@router.post('/create_subject', dependencies=[Depends(current_user.get_superuser())], response_model=None)
+@router.post(
+    '/create_subject',
+    dependencies=[Depends(current_user.get_superuser())],
+    response_model=CreateSubject,
+    status_code=status.HTTP_201_CREATED,
+)
 async def create_subject(
         subject_in: CreateSubject,
         session: AsyncSession = Depends(db_helper.session_dependency),
-) -> JSONResponse | HTTPException:
+) -> Subject:
     try:
-        return await crud.create_subject(session, subject_in)
+        subject = await crud.create_subject(session, subject_in)
+        return subject
     except IntegrityError: #обработка повторного создания объекта
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,

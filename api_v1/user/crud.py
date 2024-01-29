@@ -1,3 +1,5 @@
+from typing import Sequence
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, Result
 from sqlalchemy.orm import selectinload
@@ -34,13 +36,12 @@ async def get_subjects_by_user(
 ) -> list[str]:
     """Запрос на получение всех предметов у репетитора"""
     stmt = (
-        select(Subject)
+        select(Subject.name)
         .join(Subject.users)
         .where(User.id == user.id)
     )
-    subjects = await session.scalars(stmt)
-    subject_by_user = [res.name for res in subjects]
-    return subject_by_user
+    subject_name = await session.scalars(stmt)
+    return list(subject_name)
 
 
 async def show_all_tutor_by_subject(

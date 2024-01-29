@@ -12,14 +12,12 @@ async def get_subject(subject_name: str, session: AsyncSession,) -> Subject | No
     return await session.get(Subject, subject_name)
 
 
-async def create_subject(session: AsyncSession, subject_in: CreateSubject,) -> JSONResponse:
+async def create_subject(session: AsyncSession, subject_in: CreateSubject,) -> Subject:
     subject = Subject(**subject_in.model_dump())
     session.add(subject)
     await session.commit()
-    return JSONResponse(
-        content={"message": "Entry created successfully"},
-        status_code=status.HTTP_201_CREATED
-    )
+    return subject
+
 
 
 async def delete_subject(session: AsyncSession, subject: Subject,) -> None:
@@ -27,17 +25,15 @@ async def delete_subject(session: AsyncSession, subject: Subject,) -> None:
     await session.commit()
 
 
-async def get_all_subjects(session:AsyncSession) -> list['Subject']:
+async def get_all_subjects(session:AsyncSession) -> list[Subject]:
     stmt = select(Subject)
-    result: Result = await session.execute(stmt)
-    subjects = result.scalars().all()
-    return list(subjects)
+    subject = await session.scalars(stmt).all()
+    return list(subject)
 
 
 async def get_users_by_subject(subject_name: str, session: AsyncSession) -> list[int]:
     stmt = select(User.id).join(User.subjects).where(Subject.name == subject_name)
-    results = await session.scalars(stmt)
-    results = results.all()
+    results = await session.scalars(stmt).all()
     return list(results)
 
 
