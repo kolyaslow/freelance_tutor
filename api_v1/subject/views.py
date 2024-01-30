@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 
 
 from core.db_helper import db_helper
-from ..user.dependencies import current_user
+from ..common.dependencies import user_rights
 from . import crud
 from .schemas import CreateSubject, SubjectRead
 from core.models import Subject
@@ -17,7 +17,7 @@ router = APIRouter()
 
 @router.post(
     '/create_subject',
-    dependencies=[Depends(current_user.get_superuser())],
+    dependencies=[Depends(user_rights.checking_superuser)],
     response_model=CreateSubject,
     status_code=status.HTTP_201_CREATED,
 )
@@ -37,7 +37,7 @@ async def create_subject(
 
 @router.delete(
     '/delete_subject/{subject_name}',
-    dependencies=[Depends(current_user.get_superuser())],
+    dependencies=[Depends(user_rights.checking_superuser)],
     status_code=status.HTTP_204_NO_CONTENT,
 )
 async def delete_subject(
@@ -50,13 +50,14 @@ async def delete_subject(
 @router.get(
     '/all_subjects',
     response_model=list[SubjectRead],
-    dependencies=[Depends(current_user.get_current_user())]
+    dependencies=[Depends(user_rights.checking_current_user)]
 )
 async def get_all_subjects(session: AsyncSession = Depends(db_helper.session_dependency)) -> list['Subject']:
     """Getting subjects that the tutor can choose from"""
     return await crud.get_all_subjects(session)
 
-@router.get('/get_users/{subject_name}', dependencies=[Depends(current_user.get_current_user())])
+
+@router.get('/get_users/{subject_name}', dependencies=[Depends(user_rights.checking_current_user)])
 async def get_users_by_subject(
         subject: Subject = Depends(get_subject),
         session: AsyncSession = Depends(db_helper.session_dependency),

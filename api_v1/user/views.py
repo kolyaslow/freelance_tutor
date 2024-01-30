@@ -8,7 +8,7 @@ from . import crud
 from core.models import User, Subject
 from api_v1.profile.schemas import ReadProfile
 from api_v1.subject.dependencies import get_subject
-from .dependencies import checking_tutor
+from ..common.dependencies import user_rights
 from ..subject.schemas import AllowedValuesByName
 
 
@@ -19,7 +19,7 @@ router = APIRouter()
 async def add_subjects_by_user(
         subjects: list[AllowedValuesByName],
         session: AsyncSession = Depends(db_helper.session_dependency),
-        user: User = Depends(checking_tutor),
+        user: User = Depends(user_rights.checking_tutor),
 ) -> None:
     """Добавление предмета в список, которые ведет репетитор """
     try:
@@ -38,7 +38,7 @@ async def add_subjects_by_user(
 @router.get('/get_subject')
 async def get_subjects_by_user(
         session: AsyncSession = Depends(db_helper.session_dependency),
-        user: User = Depends(checking_tutor)
+        user: User = Depends(user_rights.checking_tutor)
 ) -> list[str]:
     """Получение репетитором всех предметов, которые он ведет"""
     return await crud.get_subjects_by_user(

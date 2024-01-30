@@ -3,12 +3,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from core import db_helper
 from core.models import User, Profile
-from ..user.dependencies import checking_tutor
+from ..common.dependencies import user_rights
 from . import crud
 
 
 async def get_profile(
-    user: User = Depends(checking_tutor),
+    user: User = Depends(user_rights.checking_tutor),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ) -> Profile | HTTPException:
     profile = await crud.get_profile(user_id=user.id, session=session)

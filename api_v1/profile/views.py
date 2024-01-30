@@ -2,7 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
 from fastapi import Depends, APIRouter, status, HTTPException
 
-from ..user.dependencies import checking_tutor
+from ..common.dependencies import user_rights
 from . import crud
 from .schemas import CreateProfile, UpdateProfile
 from core.db_helper import db_helper
@@ -17,7 +17,7 @@ router = APIRouter()
 async def create_profile(
     profile: CreateProfile,
     session: AsyncSession = Depends(db_helper.session_dependency),
-    user: User = Depends(checking_tutor),
+    user: User = Depends(user_rights.checking_tutor),
 ) -> Profile:
     try:
         return await crud.create_profile(
@@ -32,9 +32,10 @@ async def create_profile(
         )
 
 
+
 @router.patch(
     '/update_profile',
-    dependencies=[Depends(checking_tutor)],
+    dependencies=[Depends(user_rights.checking_tutor)],
     response_model=CreateProfile,
 )
 async def update_profile(
@@ -51,7 +52,7 @@ async def update_profile(
 @router.delete(
     '/delete_profile',
     status_code=status.HTTP_204_NO_CONTENT,
-    dependencies=[Depends(checking_tutor)]
+    dependencies=[Depends(user_rights.checking_tutor)]
 )
 async def delete_profile(
         session: AsyncSession = Depends(db_helper.session_dependency),
