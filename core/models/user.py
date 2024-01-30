@@ -14,33 +14,21 @@ from core.models.base import Base
 if TYPE_CHECKING:
     from .subject import Subject
     from .profile import Profile
+    from .order import Order
 
 
 
 class User(SQLAlchemyBaseUserTable[int], Base):
-    email: Mapped[str] = mapped_column(
-        String(length=320), unique=True, index=True, nullable=False
-    )
-    hashed_password: Mapped[str] = mapped_column(
-        String(length=1024), nullable=False
-    )
-    is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-    is_superuser: Mapped[bool] = mapped_column(
-        Boolean, default=False, nullable=False
-    )
-    is_verified: Mapped[bool] = mapped_column(
-        Boolean, default=False, nullable=False
-    )
     role: Mapped[str] = mapped_column(
         String(length=9), nullable=False,
     )
-
     subjects: Mapped[list['Subject']] = relationship(
         back_populates='users',
         secondary='subject_user_association',
     )
 
     profile: Mapped['Profile'] = relationship(back_populates="user")
+    orders: Mapped['Order'] = relationship(back_populates='user')
 
 
 async def get_user_db(session: AsyncSession = Depends(db_helper.session_dependency)):

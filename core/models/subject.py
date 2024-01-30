@@ -6,6 +6,7 @@ from .base import Base
 
 if TYPE_CHECKING:
     from .user import User
+    from .order import Order
 
 class Subject(Base):
     primary_key_id = False
@@ -23,3 +24,4 @@ class Subject(Base):
         back_populates='subjects',
         secondary="subject_user_association",
     )
+    orders: Mapped['Order'] = relationship('Order')

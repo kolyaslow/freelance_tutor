@@ -25,4 +25,4 @@ class Order(Base):
     description: Mapped[str]
     is_active: Mapped[bool] = mapped_column(default=True)
 
-    users: Mapped[list[User]] = relationship('User')
+    user: Mapped['User'] = relationship(back_populates='orders')
