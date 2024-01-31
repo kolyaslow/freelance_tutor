@@ -15,3 +15,11 @@ async def create_db_item(
     session.add(item)
     await session.commit()
     return item
+
+
+async def delete_db_item(
+    session: AsyncSession,
+    delete_item: Base,
+):
+    await session.delete(delete_item)
+    await session.commit()
