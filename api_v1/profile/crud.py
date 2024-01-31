@@ -5,20 +5,6 @@ from .schemas import CreateProfile, UpdateProfile
 from core.models import Profile, User
 
 
-async def create_profile(
-        session: AsyncSession,
-        profile: CreateProfile,
-        user_id: int,
-) -> Profile:
-    profile = Profile(
-        user_id=user_id,
-        **profile.model_dump()
-    )
-    session.add(profile)
-    await session.commit()
-    return profile
-
-
 async def get_profile(
         user_id: int,
         session: AsyncSession,
