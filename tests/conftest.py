@@ -7,7 +7,7 @@ from httpx import AsyncClient, Response
 from main import app
 from core.config import MODE
 from core.db_helper import db_helper
-from core.models import Base, Profile
+from core.models import Base
 
 from tests.common import (
     user_customer_data,
