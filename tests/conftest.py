@@ -28,12 +28,14 @@ from tests.common import (
 @pytest.fixture(scope='session', autouse=True)
 async def prepare_database():
     """Deleting and creating tables for each tests case."""
-    if MODE == 'TEST':
-        async with db_helper.engine.begin() as conn:
-            await conn.run_sync(Base.metadata.create_all)
-        yield
-        async with db_helper.engine.begin() as conn:
-            await conn.run_sync(Base.metadata.drop_all)
+    if MODE == 'DEV':
+        pytest.exit("run only in TEST mode")
+
+    async with db_helper.engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    yield
+    async with db_helper.engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
 
 
 @pytest.fixture(scope='session')
