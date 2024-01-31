@@ -4,6 +4,7 @@ from .user.views import router as user_router, fastapi_users
 from fastapi import APIRouter
 from .subject.views import router as subject_router
 from .profile.views import router as profile_router
+from .order.views import router as order_router
 
 router = APIRouter()
 
@@ -26,6 +27,12 @@ router.include_router(
 )
 
 router.include_router(
+    router=order_router,
+    prefix='/order',
+    tags=['Order']
+)
+
+router.include_router(
     fastapi_users.get_auth_router(auth_backend),
     prefix="/auth/jwt",
     tags=["auth"],
@@ -36,3 +43,4 @@ router.include_router(
     prefix="/auth",
     tags=["auth"],
 )
+
