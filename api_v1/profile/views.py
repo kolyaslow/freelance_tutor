@@ -59,7 +59,11 @@ async def delete_profile(
         session: AsyncSession = Depends(db_helper.session_dependency),
         profile: Profile = Depends(get_profile),
 ) -> None:
-    await crud.delete_profile(session=session, profile=profile)
+    await crud_common.delete_db_item(
+        session=session,
+        delete_item=profile
+    )
+
 
 
 

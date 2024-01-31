@@ -51,9 +51,11 @@ async def delete_profile(
     get_profile: Profile | None,
 ) -> None:
     """Удаление профиля репетитора перед тестом"""
-    if get_profile:
-        async with db_helper.session_factory() as session:
-            await crud.delete_profile(
-                profile=get_profile,
-                session=session,
-            )
+    if not get_profile:
+        return
+
+    async with db_helper.session_factory() as session:
+        await crud_common.delete_db_item(
+            session=session,
+            delete_item=get_profile
+        )
