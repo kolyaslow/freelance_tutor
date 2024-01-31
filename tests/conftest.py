@@ -52,7 +52,10 @@ def event_loop(request):
     loop.close()
 
 
-
+@pytest.fixture
+async def session():
+    async with db_helper.session_factory() as session:
+        yield session
 
 
 
