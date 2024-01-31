@@ -22,7 +22,7 @@ class TestCreateProfile(BaseRequestAPI):
         [
             {
                 'fullname': 'Петров Степан Стпанович',
-                'description': 'Я Петров'
+                'description': 'Я Петров',
             },
             {
                 'fullname': 'Петров Степан Стпанович',
@@ -30,7 +30,7 @@ class TestCreateProfile(BaseRequestAPI):
             },
             {
                 'fullname': None,
-                'description': 'Я Петров'
+                'description': 'Я Петров',
             },
             {
                 'fullname': None,

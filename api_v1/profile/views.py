@@ -4,33 +4,34 @@ from fastapi import Depends, APIRouter, status, HTTPException
 
 from ..common.dependencies import user_rights
 from . import crud
-from .schemas import CreateProfile, UpdateProfile
+from .schemas import CreateProfile, UpdateProfile, ReadProfile
 from core.db_helper import db_helper
 from core.models import User, Profile
 from .dependencies import get_profile
+from ..common import crud as crud_common
 
 
 router = APIRouter()
 
 
-@router.post('/create_profile', response_model=CreateProfile, status_code=status.HTTP_201_CREATED)
+@router.post('/create_profile', response_model=ReadProfile, status_code=status.HTTP_201_CREATED)
 async def create_profile(
     profile: CreateProfile,
     session: AsyncSession = Depends(db_helper.session_dependency),
     user: User = Depends(user_rights.checking_tutor),
 ) -> Profile:
     try:
-        return await crud.create_profile(
+        profile.user_id = user.id
+        return await crud_common.create_db_item(
             session=session,
-            user_id=user.id,
-            profile=profile,
+            model_db=Profile,
+            data=profile,
         )
     except IntegrityError:  # обработка повторного создания объекта
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=f"Профиль для пользователя с именем {user.email} уже создан"
         )
-
 
 
 @router.patch(

@@ -5,8 +5,9 @@ class BaseProfile(BaseModel):
     description: str | None = None
 
 
+
 class CreateProfile(BaseProfile):
-    pass
+    user_id: int | None = None
 
 class ReadProfile(BaseProfile):
     pass

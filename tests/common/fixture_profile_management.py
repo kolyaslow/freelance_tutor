@@ -6,7 +6,7 @@ from api_v1.profile import crud
 from api_v1.profile.schemas import CreateProfile
 from core import db_helper
 from core.models import Profile
-
+from api_v1.common import crud as crud_common
 
 @pytest.fixture
 async def get_profile(
@@ -31,16 +31,19 @@ async def create_profile_by_tutor(
 
     profile = CreateProfile(
         fullname='Петров Степан Стпанович',
-        description='Я Петров'
+        description='Я Петров',
+        user_id=register_tutor['id'],
     )
 
-    if not get_profile:
-        async with db_helper.session_factory() as session:
-            await crud.create_profile(
-                profile=profile,
-                session=session,
-                user_id=register_tutor['id'],
-            )
+    if get_profile:
+        return
+
+    async with db_helper.session_factory() as session:
+        await crud_common.create_db_item(
+            session=session,
+            model_db=Profile,
+            data=profile,
+        )
 
 
 @pytest.fixture
