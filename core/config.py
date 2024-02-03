@@ -1,27 +1,42 @@
-import os
+from pathlib import Path
 
-from dotenv import load_dotenv
-from pydantic import BaseModel
-
-load_dotenv()
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-DB_HOST = os.environ.get('DB_HOST')
-DB_PORT = os.environ.get('DB_PORT')
-DB_USER = os.environ.get('DB_USER')
-DB_PASS = os.environ.get('DB_PASS')
-DB_NAME = os.environ.get('DB_NAME')
-MODE = os.environ.get('MODE')
+class BaseSettingsApp(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_file=Path(__file__).parent.parent/".env",
+        extra='ignore',
+    )
 
 
-class DbSettings(BaseModel):
-    url: str = f"postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+class DbSettings(BaseSettingsApp):
+
+    DB_HOST: str
+    DB_PORT: str
+    DB_USER: str
+    DB_PASS: str
+    DB_NAME: str
+    MODE: str
 
     echo: bool = False
+    @property
+    def url(self):
+        url: str = f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+        return url
 
 
-class Settings():
+class JwtAuthSettings(BaseSettingsApp):
+    # Setings Authentication backends
+    SECRET_KEY_BY_JWT: str
+    SECRET_KEY_BY_UserManager: str
+
+
+class Settings(BaseSettings):
     db: DbSettings = DbSettings()
+    jwt: JwtAuthSettings = JwtAuthSettings()
 
 
 settings = Settings()
+
+

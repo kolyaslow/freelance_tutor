@@ -5,7 +5,7 @@ import pytest
 from httpx import AsyncClient, Response
 
 from main import app
-from core.config import MODE
+from core.config import settings
 from core.db_helper import db_helper
 from core.models import Base
 
@@ -28,7 +28,7 @@ from tests.common import (
 @pytest.fixture(scope='session', autouse=True)
 async def prepare_database():
     """Deleting and creating tables for each tests case."""
-    if MODE == 'DEV':
+    if settings.db.MODE == 'DEV':
         pytest.exit("run only in TEST mode")
 
     async with db_helper.engine.begin() as conn:
