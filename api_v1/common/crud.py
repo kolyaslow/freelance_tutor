@@ -21,5 +21,14 @@ async def delete_db_item(
     session: AsyncSession,
     delete_item: Base,
 ):
+    """Удаление объекта из таблици БД"""
     await session.delete(delete_item)
     await session.commit()
+
+
+async def get_db_item_by_id(
+    session: AsyncSession,
+    id_item: int,
+    model_item: Type[Base],
+):
+    return await session.get(model_item, id_item)
