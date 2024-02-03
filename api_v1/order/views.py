@@ -7,6 +7,7 @@ from .schemas import CreateOrder
 from core.models import User, Order
 from ..common.dependencies import user_rights
 from ..common import crud as crud_common
+from .dependencies import get_order_by_id
 
 router = APIRouter()
 
@@ -29,8 +30,15 @@ async def create_order(
 
 
 @router.post(
-        '/create_order',
+        '/delete_order',
         status_code=status.HTTP_204_NO_CONTENT,
+        dependencies=[Depends(user_rights.checking_customer)]
 )
-async def delete_order():
-        pass
+async def delete_order(
+        order: Order = Depends(get_order_by_id),
+        session: AsyncSession = Depends(db_helper.session_dependency)
+):
+        await crud_common.delete_db_item(
+                session=session,
+                delete_item=order,
+        )
