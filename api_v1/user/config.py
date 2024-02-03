@@ -8,25 +8,21 @@ from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin
 
 from core.models.user import User, get_user_db
+from core.config import settings
 
 if TYPE_CHECKING:
     from core.models import User
 
-load_dotenv()
-
-# Setings Authentication backends
-SECRET_KEY_BY_JWT = os.environ.get('SECRET_KEY_BY_JWT')
-SECRET_KEY_BY_UserManager = os.environ.get('SECRET_KEY_BY_UserManager')
 
 bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
 
 def get_jwt_strategy() -> JWTStrategy:
-    return JWTStrategy(secret=SECRET_KEY_BY_JWT, lifetime_seconds=3600)
+    return JWTStrategy(secret=settings.jwt.SECRET_KEY_BY_JWT, lifetime_seconds=3600)
 
 
 class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
-    reset_password_token_secret = SECRET_KEY_BY_UserManager
-    verification_token_secret = SECRET_KEY_BY_UserManager
+    reset_password_token_secret = settings.jwt.SECRET_KEY_BY_UserManager
+    verification_token_secret = settings.jwt.SECRET_KEY_BY_UserManager
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
         print(f"User {user.id} has registered.")
