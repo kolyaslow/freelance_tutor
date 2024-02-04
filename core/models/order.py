@@ -11,14 +11,6 @@ if TYPE_CHECKING:
 
 class Order(Base):
 
-    __table_args__ = (
-        UniqueConstraint(
-            "user_id",
-            "subject_name",
-            name="idx_unique_user_subject_order",
-        ),
-    )
-
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
     subject_name: Mapped[int] = mapped_column(ForeignKey('subject.name'))
