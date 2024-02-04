@@ -10,7 +10,7 @@ from api_v1.common import crud as crud_common
 
 @pytest.fixture
 async def get_profile(
-        register_tutor: dict[str, Any],
+    register_tutor: dict[str, Any],
     session: AsyncSession,
 ) -> Profile | None:
     """Получения  профиля для репетитора"""
