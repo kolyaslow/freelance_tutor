@@ -31,4 +31,5 @@ async def get_db_item_by_id(
     id_item: int,
     model_item: Type[Base],
 ):
+    """Получение объекта БД по его id"""
     return await session.get(model_item, id_item)

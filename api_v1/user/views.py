@@ -35,7 +35,7 @@ async def add_subjects_by_user(
         )
 
 
-@router.get('/get_subject')
+@router.get('/get_subjects_by_user')
 async def get_subjects_by_user(
         session: AsyncSession = Depends(db_helper.session_dependency),
         user: User = Depends(user_rights.checking_tutor)

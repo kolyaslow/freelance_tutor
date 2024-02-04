@@ -1,8 +1,8 @@
 import asyncio
-from typing import AsyncGenerator, Any
+from typing import AsyncGenerator
 
 import pytest
-from httpx import AsyncClient, Response
+from httpx import AsyncClient
 
 from main import app
 from core.config import settings

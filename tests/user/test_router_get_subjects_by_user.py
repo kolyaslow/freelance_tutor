@@ -7,7 +7,7 @@ from tests.conftest import BaseRequestAPI
 
 class TestGetSubject(BaseRequestAPI):
 
-    _url = '/user/get_subject'
+    _url = '/user/get_subjects_by_user'
     _method = 'get'
 
     async def request_by_api(self, headers: dict[str, Any] = None) -> Response:

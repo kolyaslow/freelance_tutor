@@ -10,6 +10,7 @@ class BaseRequestAPI:
     Формирование и отправка запросов к API
 
     **Parameters:**
+
     * **_url** -  адрес API ресурса
     * **_method** -  метод HTTP: GET, POST, DELETE...
     * **_data** - *(optional)* данные тела запроса

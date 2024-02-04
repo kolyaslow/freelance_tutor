@@ -5,16 +5,18 @@ from fastapi import status
 from tests.conftest import BaseRequestAPI
 
 
-class TestInaccessibilityByCustomer(BaseRequestAPI):
+class TestInaccessibility(BaseRequestAPI):
     """
-    Проверка недустопности API для ученика
+    Проверка недустопности API для определенной роли
 
-    Список недоступных API:
-        API связанные с профилем(удаление, создание, обновление),
-        API связанные с предметом(
+    **Список недоступных API для role=customer:**
+        *API связанные с профилем(удаление, создание, обновление),\n
+        *API связанные с предметом(
             получение всех предметов репетитора,
             добавление пердмета пользователю,
-        )
+        )\n
+
+
 
     """
 
@@ -28,7 +30,7 @@ class TestInaccessibilityByCustomer(BaseRequestAPI):
             ('post','/profile/create_profile'),
             ('delete', '/profile/delete_profile'),
             ('patch', '/profile/update_profile'),
-            ('get', '/user/get_subject'),
+            ('get', '/user/get_subjects_by_user'),
             ('post', '/user/add_subject')
         ]
     )

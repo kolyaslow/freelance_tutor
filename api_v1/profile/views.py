@@ -50,6 +50,7 @@ async def update_profile(
         session=session,
     )
 
+
 @router.delete(
     '/delete_profile',
     status_code=status.HTTP_204_NO_CONTENT,

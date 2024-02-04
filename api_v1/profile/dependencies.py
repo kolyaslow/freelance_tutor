@@ -10,7 +10,7 @@ from . import crud
 async def get_profile(
     user: User = Depends(user_rights.checking_tutor),
     session: AsyncSession = Depends(db_helper.session_dependency),
-) -> Profile | HTTPException:
+) -> Profile:
     profile = await crud.get_profile(user_id=user.id, session=session)
 
     if profile:
