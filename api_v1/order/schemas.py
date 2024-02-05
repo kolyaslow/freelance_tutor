@@ -12,4 +12,8 @@ class CreateOrder(BaseOrder):
     pass
 
 
+class ShowOrder(BaseOrder):
+    id: int
+
+
 
