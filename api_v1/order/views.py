@@ -3,7 +3,7 @@ from sqlalchemy.exc import IntegrityError
 from fastapi import Depends, APIRouter, status, HTTPException
 
 from core.db_helper import db_helper
-from .schemas import CreateOrder
+from .schemas import CreateOrder, ShowOrder
 from core.models import User, Order
 from ..common.dependencies import user_rights
 from ..common import crud as crud_common
@@ -14,7 +14,7 @@ router = APIRouter()
 
 @router.post(
         '/create_order',
-        response_model=CreateOrder,
+        response_model=ShowOrder,
         status_code=status.HTTP_201_CREATED
 )
 async def create_order(
@@ -31,8 +31,8 @@ async def create_order(
     )
 
 
-@router.post(
-        '/delete_order',
+@router.delete(
+        '/delete_order/{order_id}',
         status_code=status.HTTP_204_NO_CONTENT,
         dependencies=[Depends(user_rights.checking_customer)]
 )
