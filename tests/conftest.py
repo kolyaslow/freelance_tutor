@@ -21,6 +21,7 @@ from tests.common import (
     get_profile,
     create_profile_by_tutor,
     delete_profile,
+    create_subject,
     BaseRequestAPI,
 )
 

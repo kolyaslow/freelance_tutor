@@ -13,5 +13,6 @@ from .fixture_profile_management import (
     create_profile_by_tutor,
     delete_profile,
 )
+from .subject_fixture import create_subject
 from .base_request_api import BaseRequestAPI
 
