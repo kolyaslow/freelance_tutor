@@ -44,7 +44,7 @@ async def create_order(
     order: Order,
 ) -> Order:
 
-    if not get_order:
+    if get_order:
         return get_order
 
     create_order_data = CreateOrder(
@@ -66,7 +66,7 @@ async def create_order(
 @pytest.fixture
 async def delete_order(
         session: AsyncSession,
-        get_order: Order | None
+        get_order: Order | None,
 ):
     if not get_order:
         return
