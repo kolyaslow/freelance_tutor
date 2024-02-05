@@ -2,14 +2,14 @@ from tests.conftest import BaseRequestAPI
 from fastapi import status
 import pytest
 
+from core.models import Order
+
 
 class TestCreateOrder(BaseRequestAPI):
 
     _url = '/order/create_order'
     _method = 'post'
     _json = {
-        'description': 'Первый заказ',
-        'is_activ': None,
         'subject_name': 'informatics',
     }
 
@@ -42,11 +42,18 @@ class TestCreateOrder(BaseRequestAPI):
 
     async def test_recreating_order(
         self,
-        create_order,
-        auth_headers_customer,
+        create_order: Order,
+        auth_headers_customer: dict,
         create_subject,
+        order: Order,
     ):
         """Проверка на успешное создание повторного заказа"""
+        self._json = {
+            'description': order.description,
+            'is_activ': order.is_active,
+            'subject_name': order.subject_name,
+        }
+
         request = await self.request_by_api(
             headers=auth_headers_customer
         )
