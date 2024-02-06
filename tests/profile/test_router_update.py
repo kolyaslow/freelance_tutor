@@ -12,9 +12,6 @@ class TestUpdateProfile(BaseRequestAPI):
     _method = 'patch'
     _json = None
 
-    async def request_by_api(self, headers: dict[str, Any] = None) -> Response:
-        return await super().request_by_api(headers=headers)
-
     @pytest.mark.parametrize('fullname', [
         'Петров Степан Стпанович',
         None,
@@ -23,7 +20,7 @@ class TestUpdateProfile(BaseRequestAPI):
         'Я Петров',
         None,
     ])
-    async def test_by_tutor(self, auth_headers_tutor, create_profile_by_tutor, fullname, description):
+    async def test_valid_data_by_tutor(self, auth_headers_tutor, create_profile_by_tutor, fullname, description):
         """Проверка возможности обновления профиля для репетиторов."""
         self._json = {
             'fullname': fullname,
