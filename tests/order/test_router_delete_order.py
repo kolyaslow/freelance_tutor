@@ -1,4 +1,5 @@
 from fastapi import status
+import pytest
 
 from core.models import Order, Subject
 from tests.conftest import BaseRequestAPI
@@ -10,12 +11,13 @@ class TestDeleteOrder(BaseRequestAPI):
     _method = 'delete'
 
 
+    @pytest.mark.usefixtures('create_subject')
     async def test_by_customer(
         self,
         auth_headers_customer: dict,
         create_order: Order,
-        create_subject: Subject,
     ):
+        """Проверка работы Api для пользователя role==customer"""
         self._url = f'/order/delete_order/{create_order.id}'
 
         request = await self.request_by_api(
@@ -24,12 +26,13 @@ class TestDeleteOrder(BaseRequestAPI):
         assert request.status_code == status.HTTP_204_NO_CONTENT
 
 
-    async def test_repeat_delete(
+    @pytest.mark.usefixtures('delete_order')
+    async def test_deleting_defunct_order(
             self,
-            delete_order: None,
             auth_headers_customer: dict,
             order: Order,
     ):
+        """Проверка удаления несуществующего заказа"""
         self._url = f'/order/delete_order/{order.id}'
         request = await self.request_by_api(
             headers=auth_headers_customer
