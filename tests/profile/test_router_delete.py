@@ -7,8 +7,8 @@ from tests.conftest import BaseRequestAPI
 
 class TestDeleteProfile(BaseRequestAPI):
 
-    _url = '/profile/delete_profile'
-    _method = 'delete'
+    _url = "/profile/delete_profile"
+    _method = "delete"
 
     async def test_by_tutor(self, auth_headers_tutor, create_profile_by_tutor):
         """Проверка возможности удалить профиль для репетитора."""

@@ -27,10 +27,10 @@ from tests.common import (
 )
 
 
-@pytest.fixture(scope='session', autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 async def prepare_database():
     """Deleting and creating tables for each tests case."""
-    if settings.db.MODE == 'DEV':
+    if settings.db.MODE == "DEV":
         pytest.exit("run only in TEST mode")
 
     async with db_helper.engine.begin() as conn:
@@ -40,13 +40,13 @@ async def prepare_database():
         await conn.run_sync(Base.metadata.drop_all)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 async def client() -> AsyncGenerator[AsyncClient, None]:
     async with AsyncClient(app=app, base_url="http://test") as client:
         yield client
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def event_loop(request):
     """Create an instance of the default event loop for each tests case."""
     loop = asyncio.get_event_loop_policy().new_event_loop()
@@ -58,9 +58,3 @@ def event_loop(request):
 async def session():
     async with db_helper.session_factory() as session:
         yield session
-
-
-
-
-
-

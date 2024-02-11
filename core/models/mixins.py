@@ -10,12 +10,12 @@ if TYPE_CHECKING:
 
 class BaseMixin:
     _back_populates: str | None = None
-    _field_fk: str = 'id'
+    _field_fk: str = "id"
     _table_name: str
 
     @classmethod
-    def _create_fk(cls)-> Mapped[int | str]:
-        return mapped_column(ForeignKey(f'{cls._table_name}.{cls._field_fk}'))
+    def _create_fk(cls) -> Mapped[int | str]:
+        return mapped_column(ForeignKey(f"{cls._table_name}.{cls._field_fk}"))
 
     @classmethod
     def _create_relationship(cls):
@@ -26,26 +26,25 @@ class BaseMixin:
 
 
 class UserRelationMixin(BaseMixin):
-    _table_name = 'user'
+    _table_name = "user"
 
     @declared_attr
     def user_id(cls) -> Mapped[int]:
         return cls._create_fk()
 
     @declared_attr
-    def user(cls) -> Mapped['User']:
+    def user(cls) -> Mapped["User"]:
         return cls._create_relationship()
 
 
 class SubjectRelationMixin(BaseMixin):
-    _table_name = 'subject'
-    _field_fk = 'name'
+    _table_name = "subject"
+    _field_fk = "name"
 
     @declared_attr
     def subject_name(cls) -> Mapped[str]:
         return cls._create_fk()
 
     @declared_attr
-    def subject(cls) -> Mapped['Subject']:
+    def subject(cls) -> Mapped["Subject"]:
         return cls._create_relationship()
-

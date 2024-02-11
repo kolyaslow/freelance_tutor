@@ -12,9 +12,9 @@ if TYPE_CHECKING:
 class Order(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
-    subject_name: Mapped[int] = mapped_column(ForeignKey('subject.name'))
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
+    subject_name: Mapped[int] = mapped_column(ForeignKey("subject.name"))
     description: Mapped[str]
     is_active: Mapped[bool] = mapped_column(default=True)
 
-    user: Mapped['User'] = relationship(back_populates='orders')
+    user: Mapped["User"] = relationship(back_populates="orders")

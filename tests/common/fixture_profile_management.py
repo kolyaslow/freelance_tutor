@@ -8,13 +8,14 @@ from api_v1.profile.schemas import CreateProfile
 from core.models import Profile
 from api_v1.common import crud as crud_common
 
+
 @pytest.fixture
 async def get_profile(
     register_tutor: dict[str, Any],
     session: AsyncSession,
 ) -> Profile | None:
     """Получения  профиля для репетитора"""
-    profile = await crud.get_profile(user_id=register_tutor['id'], session=session)
+    profile = await crud.get_profile(user_id=register_tutor["id"], session=session)
 
     if profile:
         return profile
@@ -31,9 +32,9 @@ async def create_profile_by_tutor(
     """Создание профиля репетитора перед тетом"""
 
     profile = CreateProfile(
-        fullname='Петров Степан Стпанович',
-        description='Я Петров',
-        user_id=register_tutor['id'],
+        fullname="Петров Степан Стпанович",
+        description="Я Петров",
+        user_id=register_tutor["id"],
     )
 
     if get_profile:
@@ -55,7 +56,4 @@ async def delete_profile(
     if not get_profile:
         return
 
-    await crud_common.delete_db_item(
-        session=session,
-        delete_item=get_profile
-    )
+    await crud_common.delete_db_item(session=session, delete_item=get_profile)

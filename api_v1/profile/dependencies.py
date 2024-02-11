@@ -18,5 +18,5 @@ async def get_profile(
 
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
-        detail=f'No profile was found for user {user.email}'
+        detail=f"No profile was found for user {user.email}",
     )

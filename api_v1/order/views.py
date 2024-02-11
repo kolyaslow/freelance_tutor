@@ -13,31 +13,26 @@ router = APIRouter()
 
 
 @router.post(
-        '/create_order',
-        response_model=ShowOrder,
-        status_code=status.HTTP_201_CREATED
+    "/create_order", response_model=ShowOrder, status_code=status.HTTP_201_CREATED
 )
 async def create_order(
-        order_in: CreateOrder,
-        session: AsyncSession = Depends(db_helper.session_dependency),
-        user: User = Depends(user_rights.checking_customer),
+    order_in: CreateOrder,
+    session: AsyncSession = Depends(db_helper.session_dependency),
+    user: User = Depends(user_rights.checking_customer),
 ) -> Order:
     order_in.user_id = user.id
 
     return await crud_common.create_db_item(
-            session=session,
-            model_db=Order,
-            data=order_in,
+        session=session,
+        model_db=Order,
+        data=order_in,
     )
 
 
-@router.get(
-    '/get_all_orders',
-    response_model=list[ShowOrder]
-)
+@router.get("/get_all_orders", response_model=list[ShowOrder])
 async def get_all_orders(
-        user: User = Depends(user_rights.checking_customer),
-        session: AsyncSession = Depends(db_helper.session_dependency),
+    user: User = Depends(user_rights.checking_customer),
+    session: AsyncSession = Depends(db_helper.session_dependency),
 ) -> list[Order]:
     """Получение заказчиком всех своих заказов"""
     orders = await crud_order.get_all_orders(
@@ -47,13 +42,10 @@ async def get_all_orders(
     return orders
 
 
-@router.get(
-    '/getting_orders_for_tutor',
-    response_model=list[OrderingWithCustomer]
-)
+@router.get("/getting_orders_for_tutor", response_model=list[OrderingWithCustomer])
 async def getting_orders_for_tutor(
-        session: AsyncSession = Depends(db_helper.session_dependency),
-        user: User = Depends(user_rights.checking_tutor),
+    session: AsyncSession = Depends(db_helper.session_dependency),
+    user: User = Depends(user_rights.checking_tutor),
 ) -> list[OrderingWithCustomer]:
     orders = await crud_order.getting_orders_for_tutor(
         session=session,
@@ -63,13 +55,13 @@ async def getting_orders_for_tutor(
 
 
 @router.delete(
-        '/delete_order/{order_id}',
-        status_code=status.HTTP_204_NO_CONTENT,
-        dependencies=[Depends(user_rights.checking_customer)]
+    "/delete_order/{order_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    dependencies=[Depends(user_rights.checking_customer)],
 )
 async def delete_order(
-        order: Order = Depends(get_order_by_id),
-        session: AsyncSession = Depends(db_helper.session_dependency)
+    order: Order = Depends(get_order_by_id),
+    session: AsyncSession = Depends(db_helper.session_dependency),
 ):
     await crud_common.delete_db_item(
         session=session,

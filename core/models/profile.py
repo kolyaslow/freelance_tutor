@@ -7,11 +7,12 @@ from .base import Base
 
 if TYPE_CHECKING:
     from .user import User
+
+
 class Profile(Base):
-    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), unique=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), unique=True)
 
     fullname: Mapped[str | None]
     description: Mapped[str | None]
 
-    user: Mapped['User'] = relationship(back_populates='profile')
-
+    user: Mapped["User"] = relationship(back_populates="profile")

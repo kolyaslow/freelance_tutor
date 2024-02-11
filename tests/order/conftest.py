@@ -14,9 +14,9 @@ async def order(register_customer: dict):
     """Готовая модель заказа, для получения парамеров в тестах"""
     order = Order(
         id=1,
-        user_id=register_customer['id'],
-        subject_name='informatics',
-        description='Первый заказ',
+        user_id=register_customer["id"],
+        subject_name="informatics",
+        description="Первый заказ",
         is_active=True,
     )
     return order
@@ -54,9 +54,7 @@ async def create_order(
     )
 
     order = await crud_common.create_db_item(
-        session=session,
-        model_db=Order,
-        data=create_order_data
+        session=session, model_db=Order, data=create_order_data
     )
 
     return order
@@ -64,8 +62,8 @@ async def create_order(
 
 @pytest.fixture
 async def delete_order(
-        session: AsyncSession,
-        get_order: Order | None,
+    session: AsyncSession,
+    get_order: Order | None,
 ):
     if not get_order:
         return
@@ -74,4 +72,3 @@ async def delete_order(
         session=session,
         delete_item=get_order,
     )
-

@@ -4,8 +4,6 @@ from sqlalchemy import ForeignKey, UniqueConstraint
 from .base import Base
 
 
-
-
 class SubjectUserAssociation(Base):
 
     __table_args__ = (
@@ -16,9 +14,5 @@ class SubjectUserAssociation(Base):
         ),
     )
 
-    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
-    subject_name: Mapped[str] = mapped_column(ForeignKey('subject.name'))
-
-
-
-
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
+    subject_name: Mapped[str] = mapped_column(ForeignKey("subject.name"))

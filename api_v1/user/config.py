@@ -3,7 +3,11 @@ from typing import TYPE_CHECKING, Optional
 from dotenv import load_dotenv
 
 from fastapi_users import FastAPIUsers
-from fastapi_users.authentication import AuthenticationBackend, BearerTransport, JWTStrategy
+from fastapi_users.authentication import (
+    AuthenticationBackend,
+    BearerTransport,
+    JWTStrategy,
+)
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin
 
@@ -15,6 +19,7 @@ if TYPE_CHECKING:
 
 
 bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
+
 
 def get_jwt_strategy() -> JWTStrategy:
     return JWTStrategy(secret=settings.jwt.SECRET_KEY_BY_JWT, lifetime_seconds=3600)

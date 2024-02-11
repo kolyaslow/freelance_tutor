@@ -7,11 +7,11 @@ from tests.conftest import BaseRequestAPI
 
 
 class TestShowTutorBySubject(BaseRequestAPI):
-    """Првоерка получения профилей всех репетиторов, которые ведут определенный предмет """
+    """Првоерка получения профилей всех репетиторов, которые ведут определенный предмет"""
 
-    _subject_name = 'informatics'
-    _url = f'/user/show_all_tutor_by_subject/{_subject_name}'
-    _method = 'get'
+    _subject_name = "informatics"
+    _url = f"/user/show_all_tutor_by_subject/{_subject_name}"
+    _method = "get"
 
     async def request_by_api(self, headers: dict[str, Any] = None) -> Response:
         return await super().request_by_api(headers=headers)
@@ -28,10 +28,10 @@ class TestShowTutorBySubject(BaseRequestAPI):
 
     async def test_wrong_subject(self, auth_headers_tutor):
         """Проверка на передачу несуществующего предмета"""
-        self._subject_name = 'история'
+        self._subject_name = "история"
         response = await self.request_by_api(headers=auth_headers_tutor)
         assert response.status_code == status.HTTP_200_OK
         assert response.json() in (
             [],
-            [{'description': None, 'fullname': None}],
+            [{"description": None, "fullname": None}],
         )

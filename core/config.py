@@ -5,8 +5,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class BaseSettingsApp(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=Path(__file__).parent.parent/".env",
-        extra='ignore',
+        env_file=Path(__file__).parent.parent / ".env",
+        extra="ignore",
     )
 
 
@@ -20,6 +20,7 @@ class DbSettings(BaseSettingsApp):
     MODE: str
 
     echo: bool = False
+
     @property
     def url(self):
         url: str = f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
@@ -38,5 +39,3 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-
-

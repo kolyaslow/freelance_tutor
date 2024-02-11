@@ -7,9 +7,9 @@ from core.models import Base
 
 
 async def create_db_item(
-        session: AsyncSession,
-        model_db: Type[Base],
-        data: BaseModel,
+    session: AsyncSession,
+    model_db: Type[Base],
+    data: BaseModel,
 ):
     item = model_db(**data.model_dump())
     session.add(item)

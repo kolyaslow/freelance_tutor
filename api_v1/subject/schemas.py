@@ -15,5 +15,6 @@ class Base(BaseModel):
 class CreateSubject(Base):
     pass
 
+
 class SubjectRead(Base):
     pass

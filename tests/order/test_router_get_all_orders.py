@@ -8,10 +8,10 @@ from core.models import Order
 
 class TestGetAllOrders(BaseRequestAPI):
 
-    _url = '/order/get_all_orders'
-    _method = 'get'
+    _url = "/order/get_all_orders"
+    _method = "get"
 
-    @pytest.mark.usefixtures('create_order', 'create_subject')
+    @pytest.mark.usefixtures("create_order", "create_subject")
     async def test_by_customer(
         self,
         auth_headers_customer,

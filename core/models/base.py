@@ -21,6 +21,6 @@ class Base(DeclarativeBase):
 
     @declared_attr.directive
     def __tablename__(cls) -> str:
-        words_in_name = re.findall('[A-Z][a-z]*', cls.__name__)
-        snake_case_name = '_'.join(word.lower() for word in words_in_name)
+        words_in_name = re.findall("[A-Z][a-z]*", cls.__name__)
+        snake_case_name = "_".join(word.lower() for word in words_in_name)
         return snake_case_name

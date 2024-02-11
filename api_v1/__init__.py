@@ -8,29 +8,21 @@ from .order.views import router as order_router
 
 router = APIRouter()
 
-router.include_router(
-    router=user_router,
-    prefix='/user',
-    tags=['User']
-)
+router.include_router(router=user_router, prefix="/user", tags=["User"])
 
 router.include_router(
     router=subject_router,
-    prefix='/subject',
-    tags=['Subject'],
+    prefix="/subject",
+    tags=["Subject"],
 )
 
 router.include_router(
     router=profile_router,
-    prefix='/profile',
-    tags=['Profile'],
+    prefix="/profile",
+    tags=["Profile"],
 )
 
-router.include_router(
-    router=order_router,
-    prefix='/order',
-    tags=['Order']
-)
+router.include_router(router=order_router, prefix="/order", tags=["Order"])
 
 router.include_router(
     fastapi_users.get_auth_router(auth_backend),
@@ -43,4 +35,3 @@ router.include_router(
     prefix="/auth",
     tags=["auth"],
 )
-

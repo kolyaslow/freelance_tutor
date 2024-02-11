@@ -22,4 +22,3 @@ class OrderingWithCustomer(BaseOrder):
     description: str
     is_active: bool | None = True
     subject_name: AllowedValuesByName
-

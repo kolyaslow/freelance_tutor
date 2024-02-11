@@ -15,4 +15,3 @@ from .fixture_profile_management import (
 )
 from .subject_fixture import create_subject, add_subject_by_tutor
 from .base_request_api import BaseRequestAPI
-

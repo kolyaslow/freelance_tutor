@@ -6,8 +6,8 @@ from core.models import Profile, User
 
 
 async def get_profile(
-        user_id: int,
-        session: AsyncSession,
+    user_id: int,
+    session: AsyncSession,
 ) -> Profile:
     stmt = select(Profile).where(Profile.user_id == user_id)
     profile = await session.scalar(stmt)
@@ -15,9 +15,9 @@ async def get_profile(
 
 
 async def update_profile(
-        session: AsyncSession,
-        profile_update: UpdateProfile,
-        profile: Profile,
+    session: AsyncSession,
+    profile_update: UpdateProfile,
+    profile: Profile,
 ) -> Profile:
     for name, value in profile_update.model_dump(exclude_unset=True).items():
         setattr(profile, name, value)
@@ -26,11 +26,8 @@ async def update_profile(
 
 
 async def delete_profile(
-        session: AsyncSession,
-        profile: Profile,
+    session: AsyncSession,
+    profile: Profile,
 ) -> None:
     await session.delete(profile)
     await session.commit()
-
-
-

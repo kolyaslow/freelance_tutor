@@ -14,7 +14,9 @@ from ..common import crud as crud_common
 router = APIRouter()
 
 
-@router.post('/create_profile', response_model=ReadProfile, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/create_profile", response_model=ReadProfile, status_code=status.HTTP_201_CREATED
+)
 async def create_profile(
     profile: CreateProfile,
     session: AsyncSession = Depends(db_helper.session_dependency),
@@ -30,19 +32,19 @@ async def create_profile(
     except IntegrityError:  # обработка повторного создания объекта
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Профиль для пользователя с именем {user.email} уже создан"
+            detail=f"Профиль для пользователя с именем {user.email} уже создан",
         )
 
 
 @router.patch(
-    '/update_profile',
+    "/update_profile",
     dependencies=[Depends(user_rights.checking_tutor)],
     response_model=CreateProfile,
 )
 async def update_profile(
-        profile_update: UpdateProfile,
-        session: AsyncSession = Depends(db_helper.session_dependency),
-        profile: Profile = Depends(get_profile),
+    profile_update: UpdateProfile,
+    session: AsyncSession = Depends(db_helper.session_dependency),
+    profile: Profile = Depends(get_profile),
 ) -> Profile:
     return await crud.update_profile(
         profile=profile,
@@ -52,20 +54,12 @@ async def update_profile(
 
 
 @router.delete(
-    '/delete_profile',
+    "/delete_profile",
     status_code=status.HTTP_204_NO_CONTENT,
-    dependencies=[Depends(user_rights.checking_tutor)]
+    dependencies=[Depends(user_rights.checking_tutor)],
 )
 async def delete_profile(
-        session: AsyncSession = Depends(db_helper.session_dependency),
-        profile: Profile = Depends(get_profile),
+    session: AsyncSession = Depends(db_helper.session_dependency),
+    profile: Profile = Depends(get_profile),
 ) -> None:
-    await crud_common.delete_db_item(
-        session=session,
-        delete_item=profile
-    )
-
-
-
-
-
+    await crud_common.delete_db_item(session=session, delete_item=profile)
