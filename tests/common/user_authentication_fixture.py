@@ -5,7 +5,7 @@ from httpx import AsyncClient
 @pytest.fixture(scope="session")
 def user_tutor_data():
     user_data = {
-            "email": "user1@example.com",
+            "email": "tutor@example.com",
             "password": "1234",
             "role": "tutor"
     }
@@ -15,7 +15,7 @@ def user_tutor_data():
 @pytest.fixture(scope="session")
 def user_customer_data():
     user_data = {
-        "email": "user2@example.com",
+        "email": "customer@example.com",
         "password": "1234",
         "role": "customer"
     }

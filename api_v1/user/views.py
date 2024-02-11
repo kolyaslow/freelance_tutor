@@ -63,8 +63,17 @@ async def show_all_tutor_by_subject(
     )
 
 
-
-
+@router.delete('/delete_tutor_subjects')
+async def delete_tutor_subjects(
+        subjects: list[AllowedValuesByName],
+        user: User = Depends(user_rights.checking_tutor),
+        session: AsyncSession = Depends(db_helper.session_dependency),
+):
+    await crud.delete_tutor_subjects(
+        session=session,
+        user_id=user.id,
+        subjects_in=subjects,
+    )
 
 
 

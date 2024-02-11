@@ -1,5 +1,7 @@
 from pydantic import BaseModel
+
 from api_v1.subject.schemas import AllowedValuesByName
+
 
 class BaseOrder(BaseModel):
     description: str
@@ -16,4 +18,8 @@ class ShowOrder(BaseOrder):
     id: int
 
 
+class OrderingWithCustomer(BaseOrder):
+    description: str
+    is_active: bool | None = True
+    subject_name: AllowedValuesByName
 

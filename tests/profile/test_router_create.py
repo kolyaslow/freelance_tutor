@@ -37,8 +37,8 @@ class TestCreateProfile(BaseRequestAPI):
         assert response.json() == self._json
 
     async def test_recreate_profile(self, create_profile_by_tutor, auth_headers_tutor):
-        request = await self.request_by_api(
+        response = await self.request_by_api(
             headers=auth_headers_tutor
         )
 
-        assert request.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY

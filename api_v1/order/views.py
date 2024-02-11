@@ -1,13 +1,13 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.exc import IntegrityError
-from fastapi import Depends, APIRouter, status, HTTPException
+from fastapi import Depends, APIRouter, status
 
 from core.db_helper import db_helper
-from .schemas import CreateOrder, ShowOrder
+from .schemas import CreateOrder, ShowOrder, OrderingWithCustomer
 from core.models import User, Order
 from ..common.dependencies import user_rights
 from ..common import crud as crud_common
 from .dependencies import get_order_by_id
+from . import crud as crud_order
 
 router = APIRouter()
 
@@ -29,6 +29,37 @@ async def create_order(
             model_db=Order,
             data=order_in,
     )
+
+
+@router.get(
+    '/get_all_orders',
+    response_model=list[ShowOrder]
+)
+async def get_all_orders(
+        user: User = Depends(user_rights.checking_customer),
+        session: AsyncSession = Depends(db_helper.session_dependency),
+) -> list[Order]:
+    """Получение заказчиком всех своих заказов"""
+    orders = await crud_order.get_all_orders(
+        session=session,
+        user=user,
+    )
+    return orders
+
+
+@router.get(
+    '/getting_orders_for_tutor',
+    response_model=list[OrderingWithCustomer]
+)
+async def getting_orders_for_tutor(
+        session: AsyncSession = Depends(db_helper.session_dependency),
+        user: User = Depends(user_rights.checking_tutor),
+) -> list[OrderingWithCustomer]:
+    orders = await crud_order.getting_orders_for_tutor(
+        session=session,
+        user_id=user.id,
+    )
+    return orders
 
 
 @router.delete(

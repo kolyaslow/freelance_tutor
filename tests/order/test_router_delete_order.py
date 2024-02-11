@@ -34,7 +34,7 @@ class TestDeleteOrder(BaseRequestAPI):
     ):
         """Проверка удаления несуществующего заказа"""
         self._url = f'/order/delete_order/{order.id}'
-        request = await self.request_by_api(
+        response = await self.request_by_api(
             headers=auth_headers_customer
         )
-        assert request.status_code == status.HTTP_404_NOT_FOUND
+        assert response.status_code == status.HTTP_404_NOT_FOUND

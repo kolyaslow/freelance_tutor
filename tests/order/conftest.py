@@ -5,7 +5,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 import pytest
 
 from api_v1.common import crud as crud_common
-from api_v1.common.dependencies import get_item_db_by_id
 from api_v1.order.schemas import CreateOrder
 from core.models import Order
 
