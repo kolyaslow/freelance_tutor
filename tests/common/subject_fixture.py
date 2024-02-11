@@ -1,11 +1,10 @@
 import pytest
 
 from api_v1.subject import crud as crud_subject
-from api_v1.subject.schemas import CreateSubject
+from api_v1.subject.schemas import AllowedValuesByName, CreateSubject
+from api_v1.user import crud as crud_user
 from core import db_helper
 from core.models import Subject
-from api_v1.user import crud as crud_user
-from api_v1.subject.schemas import AllowedValuesByName
 
 
 @pytest.mark.usefixtures("prepare_database")

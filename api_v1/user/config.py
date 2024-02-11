@@ -1,18 +1,17 @@
 import os
 from typing import TYPE_CHECKING, Optional
-from dotenv import load_dotenv
 
-from fastapi_users import FastAPIUsers
+from dotenv import load_dotenv
+from fastapi import Depends, Request
+from fastapi_users import BaseUserManager, FastAPIUsers, IntegerIDMixin
 from fastapi_users.authentication import (
     AuthenticationBackend,
     BearerTransport,
     JWTStrategy,
 )
-from fastapi import Depends, Request
-from fastapi_users import BaseUserManager, IntegerIDMixin
 
-from core.models.user import User, get_user_db
 from core.config import settings
+from core.models.user import User, get_user_db
 
 if TYPE_CHECKING:
     from core.models import User

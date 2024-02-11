@@ -1,8 +1,7 @@
 from enum import Enum
 
 from fastapi_users import schemas
-from pydantic import EmailStr, BaseModel
-
+from pydantic import BaseModel, EmailStr
 
 from ..profile.schemas import ReadProfile
 

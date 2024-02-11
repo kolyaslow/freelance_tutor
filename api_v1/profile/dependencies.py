@@ -2,7 +2,8 @@ from fastapi import Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core import db_helper
-from core.models import User, Profile
+from core.models import Profile, User
+
 from ..common.dependencies import user_rights
 from . import crud
 

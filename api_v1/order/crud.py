@@ -1,8 +1,8 @@
-from sqlalchemy import select, desc
+from sqlalchemy import desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.models import User, Order, Subject
 from api_v1.order.schemas import OrderingWithCustomer
+from core.models import Order, Subject, User
 
 
 async def get_all_orders(

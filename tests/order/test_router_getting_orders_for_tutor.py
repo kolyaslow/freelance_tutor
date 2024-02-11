@@ -2,8 +2,8 @@ import pytest
 from fastapi import status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from tests.conftest import BaseRequestAPI
 from api_v1.user import crud as user_crud
+from tests.conftest import BaseRequestAPI
 
 
 @pytest.fixture

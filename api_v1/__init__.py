@@ -1,10 +1,12 @@
-from .user.config import auth_backend
-from .user.schemas import UserRead, UserCreate
-from .user.views import router as user_router, fastapi_users
 from fastapi import APIRouter
-from .subject.views import router as subject_router
-from .profile.views import router as profile_router
+
 from .order.views import router as order_router
+from .profile.views import router as profile_router
+from .subject.views import router as subject_router
+from .user.config import auth_backend
+from .user.schemas import UserCreate, UserRead
+from .user.views import fastapi_users
+from .user.views import router as user_router
 
 router = APIRouter()
 

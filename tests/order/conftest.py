@@ -1,8 +1,8 @@
 import asyncio
 from typing import Any
 
-from sqlalchemy.ext.asyncio import AsyncSession
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from api_v1.common import crud as crud_common
 from api_v1.order.schemas import CreateOrder

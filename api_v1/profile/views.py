@@ -1,15 +1,15 @@
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.exc import IntegrityError
-from fastapi import Depends, APIRouter, status, HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from core.db_helper import db_helper
+from core.models import Profile, User
+
+from ..common import crud as crud_common
 from ..common.dependencies import user_rights
 from . import crud
-from .schemas import CreateProfile, UpdateProfile, ReadProfile
-from core.db_helper import db_helper
-from core.models import User, Profile
 from .dependencies import get_profile
-from ..common import crud as crud_common
-
+from .schemas import CreateProfile, ReadProfile, UpdateProfile
 
 router = APIRouter()
 

@@ -1,15 +1,14 @@
-from fastapi import APIRouter, Depends, status, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-
 from core.db_helper import db_helper
+from core.models import Subject
+
 from ..common.dependencies import user_rights
 from . import crud
-from .schemas import CreateSubject, SubjectRead
-from core.models import Subject
 from .dependencies import get_subject
-from sqlalchemy.exc import IntegrityError
-
+from .schemas import CreateSubject, SubjectRead
 
 router = APIRouter()
 

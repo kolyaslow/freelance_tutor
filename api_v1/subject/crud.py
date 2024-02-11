@@ -1,11 +1,12 @@
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import status
+from fastapi.responses import JSONResponse
 from sqlalchemy import select
 from sqlalchemy.engine import Result
-from fastapi.responses import JSONResponse
-from fastapi import status
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from core.models import Subject, User
 
 from .schemas import CreateSubject
-from core.models import Subject, User
 
 
 async def get_subject(

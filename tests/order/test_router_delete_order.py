@@ -1,5 +1,5 @@
-from fastapi import status
 import pytest
+from fastapi import status
 
 from core.models import Order, Subject
 from tests.conftest import BaseRequestAPI

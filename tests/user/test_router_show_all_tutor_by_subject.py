@@ -1,7 +1,7 @@
 from typing import Any
 
-from httpx import Response
 from fastapi import status
+from httpx import Response
 
 from tests.conftest import BaseRequestAPI
 

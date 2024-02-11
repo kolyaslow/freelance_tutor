@@ -3,10 +3,10 @@ from typing import Any
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from api_v1.common import crud as crud_common
 from api_v1.profile import crud
 from api_v1.profile.schemas import CreateProfile
 from core.models import Profile
-from api_v1.common import crud as crud_common
 
 
 @pytest.fixture

@@ -1,12 +1,13 @@
 from typing import Annotated
 
-from fastapi import Path, Depends
+from fastapi import Depends, Path
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.models import Subject
 from core.db_helper import db_helper
-from .schemas import AllowedValuesByName
+from core.models import Subject
+
 from ..common.dependencies import get_item_db_by_id
+from .schemas import AllowedValuesByName
 
 
 async def get_subject(

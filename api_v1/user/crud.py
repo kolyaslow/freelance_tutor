@@ -1,10 +1,10 @@
 from typing import Sequence
 
+from sqlalchemy import Result, delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, Result, delete
 from sqlalchemy.orm import selectinload
 
-from core.models import User, Subject, Profile
+from core.models import Profile, Subject, User
 
 
 async def add_subjects_by_user(

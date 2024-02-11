@@ -1,9 +1,8 @@
 import pytest
-
-from tests.conftest import BaseRequestAPI
 from fastapi import status
 
 from core.models import Order
+from tests.conftest import BaseRequestAPI
 
 
 class TestGetAllOrders(BaseRequestAPI):

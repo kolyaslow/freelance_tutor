@@ -1,8 +1,9 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from .schemas import CreateProfile, UpdateProfile
 
 from core.models import Profile, User
+
+from .schemas import CreateProfile, UpdateProfile
 
 
 async def get_profile(
