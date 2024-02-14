@@ -3,8 +3,8 @@ from typing import Type
 from fastapi import Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from api_v1.user.config import fastapi_users
 from api_v1.user.schemas import Role
-from api_v1.user.views import fastapi_users
 from core.db_helper import db_helper
 from core.models import Base, User
 
