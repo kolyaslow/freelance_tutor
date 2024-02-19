@@ -1,7 +1,6 @@
-import os
+import logging
 from typing import TYPE_CHECKING, Optional
 
-from dotenv import load_dotenv
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, FastAPIUsers, IntegerIDMixin
 from fastapi_users.authentication import (
@@ -17,6 +16,8 @@ if TYPE_CHECKING:
     from core.models import User
 
 
+logger = logging.getLogger(__name__)
+
 bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
 
 
@@ -29,17 +30,19 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     verification_token_secret = settings.jwt.SECRET_KEY_BY_UserManager
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
-        print(f"User {user.id} has registered.")
+        logger.info(f"User {user.id} has registered.")
 
     async def on_after_forgot_password(
         self, user: User, token: str, request: Optional[Request] = None
     ):
-        print(f"User {user.id} has forgot their password. Reset token: {token}")
+        logger.info(f"User {user.id} has forgot their password. Reset token: {token}")
 
     async def on_after_request_verify(
         self, user: User, token: str, request: Optional[Request] = None
     ):
-        print(f"Verification requested for user {user.id}. Verification token: {token}")
+        logger.info(
+            f"Verification requested for user {user.id}. Verification token: {token}"
+        )
 
 
 async def get_user_manager(user_db=Depends(get_user_db)):

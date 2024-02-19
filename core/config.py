@@ -1,6 +1,16 @@
+import logging
 from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+logging.basicConfig(
+    filename="app.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(filename)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+
+loger = logging.getLogger(__name__)
 
 
 class BaseSettingsApp(BaseSettings):
@@ -19,11 +29,12 @@ class DbSettings(BaseSettingsApp):
     DB_NAME: str
     MODE: str
 
-    echo: bool = False
+    echo: bool = True
 
     @property
     def url(self):
         url: str = f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+        loger.debug(f"url бд: {url}")
         return url
 
 

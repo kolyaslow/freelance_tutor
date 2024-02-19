@@ -5,6 +5,10 @@ from sqlalchemy.orm import DeclarativeBase, declared_attr, mapped_column
 
 
 class Base(DeclarativeBase):
+    """
+    Создание PK и преобразоывавыние имени таблице из PascalCase в snake_case, дял таблиц БД
+    """
+
     __abstract__ = True
     primary_key_id: bool = True
 

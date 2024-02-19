@@ -52,17 +52,6 @@ class TestGettingOrdersForTutor(BaseRequestAPI):
         assert response.status_code == status.HTTP_200_OK
         assert response.json() == []
 
-    async def test_empty_order(
-        self,
-        add_subject_by_tutor,
-        auth_headers_tutor,
-    ):
-        """Проверка случая, когда нет подходящих заказов"""
-        response = await self.request_by_api(headers=auth_headers_tutor)
-
-        assert response.status_code == status.HTTP_200_OK
-        assert response.json() == []
-
     async def test_just_right_orders(
         self,
         add_subject_by_tutor,
