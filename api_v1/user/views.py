@@ -1,16 +1,18 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import EmailStr
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from api_v1.common.dependencies import user_rights
 from api_v1.profile.schemas import ReadProfile
 from api_v1.subject.dependencies import get_subject
 from core import db_helper
 from core.models import Subject, User
 
-from ..common.dependencies import user_rights
 from ..subject.schemas import AllowedValuesByName
 from . import crud
-from .config import fastapi_users
+from .config import verify_request
+from .fastapi_user import fastapi_users
 
 router = APIRouter()
 
@@ -65,8 +67,23 @@ async def delete_tutor_subjects(
     user: User = Depends(user_rights.checking_tutor),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
+    """Удаляет предметы,, которые ведет репетитор"""
     await crud.delete_tutor_subjects(
         session=session,
         user_id=user.id,
         subjects_in=subjects,
+    )
+
+
+@router.post("/verify_user", status_code=status.HTTP_200_OK)
+async def verify_user(
+    user_email: EmailStr,
+    code: str,
+    session: AsyncSession = Depends(db_helper.session_dependency),
+):
+    """Проверяет код отпрравленный на опчту"""
+    await verify_request(
+        user_email=user_email,
+        code=code,
+        session=session,
     )

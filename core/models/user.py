@@ -11,6 +11,7 @@ from core import db_helper
 from core.models.base import Base
 
 if TYPE_CHECKING:
+    from .confirmation_keys import ConfirmationKeys
     from .order import Order
     from .profile import Profile
     from .subject import Subject
@@ -28,6 +29,7 @@ class User(SQLAlchemyBaseUserTable[int], Base):
 
     profile: Mapped["Profile"] = relationship(back_populates="user")
     orders: Mapped["Order"] = relationship(back_populates="user")
+    confirmation_keys: Mapped["ConfirmationKeys"] = relationship(back_populates="user")
 
 
 async def get_user_db(session: AsyncSession = Depends(db_helper.session_dependency)):

@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from api_v1.common.dependencies import user_rights
 from core.db_helper import db_helper
 from core.models import Order, User
 
 from ..common import crud as crud_common
-from ..common.dependencies import user_rights
 from . import crud as crud_order
 from .dependencies import get_order_by_id
 from .schemas import CreateOrder, OrderingWithCustomer, ShowOrder

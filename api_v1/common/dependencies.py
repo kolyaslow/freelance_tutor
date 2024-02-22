@@ -3,12 +3,11 @@ from typing import Type
 from fastapi import Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api_v1.user.config import fastapi_users
+from api_v1.common import crud as crud_common
+from api_v1.user.fastapi_user import fastapi_users
 from api_v1.user.schemas import Role
 from core.db_helper import db_helper
 from core.models import Base, User
-
-from . import crud as crud_common
 
 
 class UserRights:
@@ -25,15 +24,25 @@ class UserRights:
         )
 
     async def checking_tutor(
-        self, user: User = Depends(fastapi_users.current_user())
+        self,
+        user: User = Depends(
+            fastapi_users.current_user(
+                verified=True,
+            )
+        ),
     ) -> User:
         """Проверка является ли текщий пользователей репетитором"""
         return await self.__checking_role(Role.tutor, user=user)
 
     async def checking_customer(
-        self, user: User = Depends(fastapi_users.current_user())
+        self,
+        user: User = Depends(
+            fastapi_users.current_user(
+                verified=True,
+            )
+        ),
     ) -> User:
-        """Проверка является ли текщий пользователей репетитором"""
+        """Проверка является ли текщий пользователей заказчиком"""
         return await self.__checking_role(Role.customer, user=user)
 
     async def checking_superuser(
@@ -48,7 +57,12 @@ class UserRights:
         return user
 
     async def checking_current_user(
-        self, user: User = Depends(fastapi_users.current_user())
+        self,
+        user: User = Depends(
+            fastapi_users.current_user(
+                verified=True,
+            )
+        ),
     ) -> User:
         return user
 

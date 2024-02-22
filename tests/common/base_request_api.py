@@ -31,7 +31,5 @@ class BaseRequestAPI:
                 json=self._json,
                 headers=headers,
             )
-
             response: Response = await client.send(request)
-
             return response

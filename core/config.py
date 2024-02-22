@@ -5,7 +5,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 logging.basicConfig(
     filename="app.log",
-    level=logging.INFO,
+    level=logging.ERROR,
     format="%(asctime)s - %(levelname)s - %(filename)s - %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
 )
@@ -29,7 +29,7 @@ class DbSettings(BaseSettingsApp):
     DB_NAME: str
     MODE: str
 
-    echo: bool = True
+    echo: bool = False
 
     @property
     def url(self):

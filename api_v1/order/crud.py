@@ -18,7 +18,7 @@ async def getting_orders_for_tutor(
     session: AsyncSession,
     user_id: int,
     start_index: int = 0,
-    end_index: int = 10000,
+    end_index: int = 100,
 ) -> list[OrderingWithCustomer]:
 
     stmt = (

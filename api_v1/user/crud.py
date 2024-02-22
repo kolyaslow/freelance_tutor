@@ -2,9 +2,9 @@ from typing import Sequence
 
 from sqlalchemy import Result, delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
+from sqlalchemy.orm import joinedload, selectinload
 
-from core.models import Profile, Subject, User
+from core.models import ConfirmationKeys, Profile, Subject, User
 
 
 async def add_subjects_by_user(
@@ -66,3 +66,26 @@ async def delete_tutor_subjects(
         if subject.name in subjects_in:
             user.subjects.remove(subject)
     await session.commit()
+
+
+async def set_field_verified(
+    session: AsyncSession,
+    user: User,
+) -> User:
+    user.is_verified = True
+    await session.commit()
+    return user
+
+
+async def get_user_with_code(
+    session: AsyncSession,
+    user_email: str,
+) -> User:
+    stmt = (
+        select(User)
+        .options(joinedload(User.confirmation_keys))
+        .where(User.email == user_email)
+    )
+
+    user = await session.scalar(stmt)
+    return user
