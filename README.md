@@ -11,9 +11,9 @@
  • SQLAlchemy  
  • PostgreSQL(asyncpg)  
  • Alembic  
- • Pytest(pytest-asyncio) 
+ • Pytest(pytest-asyncio)  
  • Redis  
- • Celery 
+ • Celery  
  • Git  
 ## Схема БД 
 
@@ -27,11 +27,11 @@
     [обновление](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/profile/views.py#L40),
     [чтение всего профиля](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/views.py#L54))
      профиля.  
-  - Работа с предметами которые ведет репетитор (удаление, добавление)  
-  - Получения предметов, которые он ведет.  
-- Получение всех репетиторов, которые ведут определенный предмет.  
+  - Работа с предметами которые ведет репетитор ([удаление](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/views.py#L65), [добавление](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/views.py#L28))  
+  - Получения предметов, которые он ведет. [Реализация](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/views.py#L41)  
+- Получение всех репетиторов, которые ведут определенный предмет. [Реализация] (https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/views.py#L50)
 - Работа с заказом (создать заказ может только заказчик):  
-  - CRUD (удаление, создание, обновление, чтение) заказа.  
+  - CRUD ([удаление](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/order/views.py#L58), [создание](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/order/views.py#L19), [чтение](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/order/views.py#L34)) заказа.  
   - Получение всех заказов, которые репетитор может взять.  
 ## Примеры API:  
 Получение всех заказов, которые репетитор может взять.   
