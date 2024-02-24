@@ -7,21 +7,26 @@
 4.[Примеры API](#примеры-API)  
 5.[Автор](#автор)  
 ## Используемый стек технологий:   
-•	FastAPI  
-•	SQLAlchemy  
-•	PostgreSQL(asyncpg)  
-•	Alembic  
-•	Pytest(pytest-asyncio) 
-•	Redis  
-•	Celery 
-•	Git  
+ • FastAPI  
+ • SQLAlchemy  
+ • PostgreSQL(asyncpg)  
+ • Alembic  
+ • Pytest(pytest-asyncio) 
+ • Redis  
+ • Celery 
+ • Git  
 ## Схема БД 
 
 ## Реализованная функциональность:  
-- Регистрация пользователей с разными правами.[Реализация]()
-- Подтверждение почты пользователя  
+- Регистрация пользователей с разными правами. [Реализация](#https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/__init__.py#L29)
+- Подтверждение почты пользователя. [Реализация](#https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/config.py#L40)    
 - Работа с профилем(и) пользователя(ей) (профиль может создать только репетитор):  
-  - CRUD (удаление, создание, обновление, чтение всего профиля) профиля.  
+  - CRUD (
+    [удаление](#https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/profile/views.py#L56),
+    [создание](#https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/profile/views.py#L20),
+    [обновление](#https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/profile/views.py#L40),
+    [чтение всего профиля](#https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/views.py#L54))
+     профиля.  
   - Работа с предметами которые ведет репетитор (удаление, добавление)  
   - Получения предметов, которые он ведет.  
 - Получение всех репетиторов, которые ведут определенный предмет.  
