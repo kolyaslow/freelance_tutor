@@ -18,8 +18,9 @@
 - Celery
 - Git
 
+## Схема БД:
 <details>
-<summary style="font-size: 60px;"><b>Схема БД:</b></summary>
+<summary style="font-size: 60px;"><b>Посмотреть схему.</b></summary>
 
 ![photo](/photo/db.png)
 
