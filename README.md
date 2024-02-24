@@ -27,7 +27,7 @@
     [обновление](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/profile/views.py#L40),
     [чтение всего профиля](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/views.py#L54))
      профиля.  
-  - Работа с предметами которые ведет репетитор ([удаление](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/views.py#L65), [добавление](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/views.py#L28))  
+  - Работа с предметами которые ведет репетитор. ([удаление](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/views.py#L65), [добавление](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/views.py#L28))  
   - Получения предметов, которые он ведет. [Реализация.](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/views.py#L41)  
 - Получение всех репетиторов, которые ведут определенный предмет. [Реализация.](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/views.py#L50)
 - Работа с заказом (создать заказ может только заказчик):  
