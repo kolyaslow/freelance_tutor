@@ -17,8 +17,8 @@ async def get_all_orders(
 async def getting_orders_for_tutor(
     session: AsyncSession,
     user_id: int,
-    start_index: int = 0,
-    end_index: int = 100,
+    start_index: int,
+    finish_index: int,
 ) -> list[OrderingWithCustomer]:
 
     stmt = (
@@ -28,7 +28,7 @@ async def getting_orders_for_tutor(
         .where(User.id == user_id)
         .order_by(desc(Order.id))
         .offset(start_index)
-        .limit(end_index - start_index + 1)
+        .limit(finish_index - start_index + 1)
     )
 
     result = await session.execute(stmt)

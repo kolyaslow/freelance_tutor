@@ -45,12 +45,16 @@ async def get_all_orders(
 
 @router.get("/getting_orders_for_tutor", response_model=list[OrderingWithCustomer])
 async def getting_orders_for_tutor(
+    start_index: int = 0,
+    finish_index: int = 10,
     session: AsyncSession = Depends(db_helper.session_dependency),
     user: User = Depends(user_rights.checking_tutor),
 ) -> list[OrderingWithCustomer]:
     orders = await crud_order.getting_orders_for_tutor(
         session=session,
         user_id=user.id,
+        start_index=start_index,
+        finish_index=finish_index,
     )
     return orders
 
