@@ -19,7 +19,7 @@
 - Git
 
 <details>
-<summary style="font-size: 20px;"><b>Схема БД:</b></summary>
+<summary style="font-size: 60px;"><b>Схема БД:</b></summary>
 
 ![photo](/photo/db.png)
 
