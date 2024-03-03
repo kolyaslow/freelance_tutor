@@ -21,6 +21,8 @@ from tests.common import (
     get_profile,
     register_customer,
     register_tutor,
+    set_field_verified_by_customer,
+    set_field_verified_by_tutor,
     user_customer_data,
     user_tutor_data,
 )

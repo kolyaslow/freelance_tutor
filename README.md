@@ -1,14 +1,14 @@
 ## Фриланс для репетиторов
-Этот проект предоставляет репетиторам API для просмотра и принятия заказов, сделанных пользователями. Пользователи могут размещать заказы на уроки и просматривать свободных репетиторов.
-## Оглавление:
+Этот проект представляет собой API, часть backend-приложения для просмотра и принятия заказов репетиторами.
+## Оглавление
 
 1. [Используемый стек технологий](#используемый-стек-технологий)
-2. [Схема БД](#схема-бд)
+2. [Запуск и тестирование](#запуск-и-тестирование)
 3. [Реализованная функциональность](#реализованная-функциональность)
-4. [Примеры API](#примеры-API)
+4. [Документация](#Документация)
 5. [Автор](#автор)
 
-## Используемый стек технологий:
+## Используемый стек технологий
 - FastAPI
 - SQLAlchemy
 - PostgreSQL(asyncpg)
@@ -18,14 +18,13 @@
 - Celery
 - Git
 
-<details>
-<summary style="font-size: 20px;"><b>Схема БД:</b></summary>
+## Запуск и тестирование
+Клонируйте репозиторий на локальную машину:
+```commandline
+$ git clone https://github.com/kolyaslow/freelance_tutor.git
+```
 
-![photo](/photo/db.png)
-
-</details>
-
-## Реализованная функциональность:
+## Реализованная функциональность
 - Регистрация пользователей с разными правами. [Реализация.](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/config.py#L29)
 - Подтверждение почты пользователя. [Реализация.](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/config.py#L40)
 - Работа с профилем(и) пользователя(ей) (профиль может создать только репетитор):
@@ -36,57 +35,167 @@
     [чтение всего профиля](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/views.py#L54))
      профиля.
   - Работа с предметами которые ведет репетитор. ([удаление](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/views.py#L65), [добавление](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/views.py#L28))
-  - Получения предметов, которые он ведет. [Реализация.](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/views.py#L41)
+  - Получения предметов, которые ведет репетитор. [Реализация.](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/views.py#L41)
 - Получение всех репетиторов, которые ведут определенный предмет. [Реализация.](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/views.py#L50)
 - Работа с заказом (создать заказ может только заказчик):
   - CRUD ([удаление](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/order/views.py#L58), [создание](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/order/views.py#L19), [чтение](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/order/views.py#L34)) заказа.
   - Получение всех заказов, которые репетитор может взять. [Реализация.](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/order/views.py#L47)
 
-## Примеры API:
-- Получение всех заказов, которые репетитор может взять.
 
-запрос:
-```
-order/getting_orders_for_tutor?start_index=0&finish_index=30
-```
-ответ:
-```json
-[
-  {
-    "description": "Первый заказ",
-    "is_active": true,
-    "subject_name": "mathematics",
-    "user_id": 0
-  },
-  {
-    "description": "Третий заказ",
-    "is_active": true,
-    "subject_name": "informatics",
-    "user_id": 3
-  }
-]
-```
-- Получение профилей репетиторов по определенному предмету.
+## Документация
 
-запрос:
+<details>
+<summary>Схема БД</summary>
+
+![photo](/photo/db.png)
+
+>Сущность User
 ```
-user/show_all_tutor_by_subject/mathematics
-```
-ответ:
-```json
-[
-  {
-    "fullname": "Петров Петр Петрович",
-    "description": "Я Петров Петр Петрович"
-  },
-  {
-    "fullname": "Антонов Антон Антонович",
-    "description": "Я Антонов Антон Антонович"
-  }
-]
+id(PK) - уникальный идентификатор записи
+email - email пользователя указанный при регистрации
+hashed_password - хэш пароля
+is_active - показатель, что пользователь пользуется аккаунтом
+is_superuser - поле показывающее, что пользователь суперпользователь
+is_verified - поле показывающее, что пользователь подтвердил email
+role - роль пользователя (репетитор, ученик)
 ```
 
-## Автор:
+>Сущность Profile
+```
+id(PK) - уникальный идентификатор записи
+fullname - ФИО репетитора
+description - описание профиля
+```
+
+>Сущность Subject
+```
+name(PK) - название предмета
+```
+
+>Сущность SubjectUserAssociation
+```
+id(PK) - уникальный идентификатор записи
+user_id(FK) - id пользователя (репетитора)
+subject_name(FK) - название предмета
+```
+
+>Сущность Order
+```
+id(PK) - уникальный идентификатор записи
+user_id(FK) - id пользователя (ученика)
+subject_name(FK) - название предмета
+description - описание профиля
+is_active - поле показывающее, открыт ли заказ или закрыт
+```
+
+>Сущность Response
+```
+id(PK) - уникальный идентификатор записи
+order_id(FK) - id заказа
+user_id(FK) - id пользователя (репетитора)
+status - показатель принятие репетитора, как исполнителя
+```
+
+>Сущность ConfirmationKeys
+```
+id(PK) - уникальный идентификатор записи
+user_id(FK) - id пользователя (репетитора)
+email_confirmation_code - код подтверждения email пользователя
+```
+</details>
+
+<details>
+
+<summary>Схема проекта</summary>
+
+```commandline
+|   main.py             # Точка входа проекта
+|   pyproject.toml      # Зависимости проекта
+|
++---alembic     # Модуль миграции БД
++---api_v1      # Модуль API_V
+|   |   schemas_confirmation_keys.py    # Pydentic схемы для таблицы confirmation_keys
+|   |   __init__.py                     # Инициализатор пакета, где все роутеры собираются для последуещего импорта в эеземпляр fastapi(app)
+|   |
+|   +---common  # Модуль с общими функциями необходимыми API
+|   |   |   crud.py                     # Модуль для взаимодействия с базой данных
+|   |   |   dependencies.py             # Модуль для описания зависимостей
+|   |
+|   +---order
+|   |   |   crud.py
+|   |   |   dependencies.py
+|   |   |   schemas.py
+|   |   |   views.py        # Модуль для описание endpoint API
+|   |
+|   +---profile
+|   |   |   crud.py
+|   |   |   dependencies.py
+|   |   |   schemas.py
+|   |   |   views.py
+|   |
+|   +---subject
+|   |   |   crud.py
+|   |   |   dependencies.py
+|   |   |   schemas.py
+|   |   |   views.py
+|   |
+|   +---task_selery
+|   |   |   config.py       # Конфигурация даных для модуля
+|   |   |   send_email.py   # Модуль отправки письма на email
+|   |
+|   +---user
+|   |   |   config.py
+|   |   |   crud.py
+|   |   |   fastapi_user.py     # Модуль создания экземпляра FastapiUser
+|   |   |   schemas.py
+|   |   |   views.py
+|   |
++---core
+|   |   config.py           # Конфигурация преокта в том числе бд
+|   |   db_helper.py        # Создание AsyncEngine, AsycSessionFactory
+|   |   __init__.py
+|   |
+|   +---models
+|   |   |   base.py                         # Модуль базовой модели ORM
+|   |   |   confirmation_keys.py
+|   |   |   mixins.py                       # Модуль примесей для создание связей между таблицами БД
+|   |   |   order.py
+|   |   |   profile.py
+|   |   |   subject.py
+|   |   |   subject_user_association.py     # Таблица для связи многие ко многим между таблицами subject и user
+|   |   |   user.py
+|   |   |   __init__.py                     # Инициализация всех элементов для работы с БД через SQLalchemy.
++---tests   # Модуль с тестами проекта
+|   |   conftest.py       # Общие фикстуры необходимые тестам
+|   |   test_inaccessibility_api.py     # Тесты проверки авторизации API
+|   |
+|   +---common
+|   |   |   base_request_api.py     # Модуль формирования и оправки тестовых запросов
+|   |   |   fixture_profile_management.py       # Модуль фикстур отвечающих за управление профилем
+|   |   |   subject_fixture.py
+|   |   |   user_authentication_fixture.py      # Модуль аутентификации пользователей с разными правами
+|   |   |   __init__.py
+|   |
+|   +---order
+|   |   |   conftest.py
+|   |   |   test_router_create_order.py     # Тесты для роутера create_order
+|   |   |   test_router_delete_order.py
+|   |   |   test_router_getting_orders_for_tutor.py
+|   |   |   test_router_get_all_orders.py
+|   |
+|   +---profile
+|   |   |   test_router_create.py
+|   |   |   test_router_delete.py
+|   |   |   test_router_update.py
+|   |
+|   +---user
+|   |   |   test_router_get_subjects_by_user.py
+|   |   |   test_router_show_all_tutor_by_subject.py
+|   |
+```
+</details>
+
+## Автор
 **Николай Пышенко**
 - email: pysenkon@gmail.com
 - Telegram: [@koliaslow](https://t.me/koliaslow)

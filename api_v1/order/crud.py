@@ -17,9 +17,12 @@ async def get_all_orders(
 async def getting_orders_for_tutor(
     session: AsyncSession,
     user_id: int,
-    start_index: int,
-    finish_index: int,
+    page: int,
+    size: int,
 ) -> list[OrderingWithCustomer]:
+    """Получение заказов, которые может взять рпетитор"""
+    offset_min = page * size
+    offset_max = (page + 1) * size
 
     stmt = (
         select(Order.description, Order.subject_name, Order.id)
@@ -27,8 +30,8 @@ async def getting_orders_for_tutor(
         .join(Subject.orders)
         .where(User.id == user_id)
         .order_by(desc(Order.id))
-        .offset(start_index)
-        .limit(finish_index - start_index + 1)
+        .offset(offset_min)
+        .limit(offset_max - offset_min + 1)
     )
 
     result = await session.execute(stmt)

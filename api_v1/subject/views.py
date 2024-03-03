@@ -55,17 +55,3 @@ async def get_all_subjects(
 ) -> list["Subject"]:
     """Getting subjects that the tutor can choose from"""
     return await crud.get_all_subjects(session)
-
-
-@router.get(
-    "/get_users/{subject_name}",
-    dependencies=[Depends(user_rights.checking_current_user)],
-)
-async def get_users_by_subject(
-    subject: Subject = Depends(get_subject),
-    session: AsyncSession = Depends(db_helper.session_dependency),
-) -> list[int]:
-    """
-    Getting all users for a specific subject
-    """
-    return await crud.get_users_by_subject(session=session, subject_name=subject.name)

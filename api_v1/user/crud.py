@@ -38,12 +38,19 @@ async def get_subjects_by_user(
 async def show_all_tutor_by_subject(
     session: AsyncSession,
     subject_name: str,
+    page: int,
+    size: int,
 ):
+    offset_min = page * size
+    offset_max = (page + 1) * size
+
     stmt = (
         select(Profile.fullname, Profile.description)
         .join(User.subjects)
         .join(User.profile)
         .where(Subject.name == subject_name)
+        .offset(offset_min)
+        .limit(offset_max - offset_min + 1)
     )
 
     result: Result = await session.execute(stmt)

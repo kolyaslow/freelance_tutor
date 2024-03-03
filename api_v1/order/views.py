@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api_v1.common.dependencies import user_rights
@@ -45,16 +45,16 @@ async def get_all_orders(
 
 @router.get("/getting_orders_for_tutor", response_model=list[OrderingWithCustomer])
 async def getting_orders_for_tutor(
-    start_index: int = 0,
-    finish_index: int = 10,
+    page: int = Query(ge=0, default=0),
+    size: int = Query(ge=1, le=100, default=10),
     session: AsyncSession = Depends(db_helper.session_dependency),
     user: User = Depends(user_rights.checking_tutor),
 ) -> list[OrderingWithCustomer]:
     orders = await crud_order.getting_orders_for_tutor(
         session=session,
         user_id=user.id,
-        start_index=start_index,
-        finish_index=finish_index,
+        page=page,
+        size=size,
     )
     return orders
 

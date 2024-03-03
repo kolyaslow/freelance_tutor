@@ -4,7 +4,6 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, declared_attr, mapped_column, relationship
 
 if TYPE_CHECKING:
-    from .subject import Subject
     from .user import User
 
 
@@ -42,17 +41,4 @@ class UserRelationMixin(BaseMixin):
 
     @declared_attr
     def user(cls) -> Mapped["User"]:
-        return cls._create_relationship()
-
-
-class SubjectRelationMixin(BaseMixin):
-    _table_name = "subject"
-    _field_fk = "name"
-
-    @declared_attr
-    def subject_name(cls) -> Mapped[str]:
-        return cls._create_fk()
-
-    @declared_attr
-    def subject(cls) -> Mapped["Subject"]:
         return cls._create_relationship()

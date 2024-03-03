@@ -7,6 +7,8 @@ from .user_authentication_fixture import (
     auth_headers_customer,
     auth_customer,
     auth_tutor,
+    set_field_verified_by_customer,
+    set_field_verified_by_tutor,
 )
 from .fixture_profile_management import (
     get_profile,

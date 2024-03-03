@@ -38,9 +38,3 @@ async def get_all_subjects(session: AsyncSession) -> list[Subject]:
     stmt = select(Subject)
     subject = await session.scalars(stmt).all()
     return list(subject)
-
-
-async def get_users_by_subject(subject_name: str, session: AsyncSession) -> list[int]:
-    stmt = select(User.id).join(User.subjects).where(Subject.name == subject_name)
-    results = await session.scalars(stmt).all()
-    return list(results)

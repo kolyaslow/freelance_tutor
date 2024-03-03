@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15.2
+    container_name: db_app
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env-non-dev
+
+
+  app:
+    build:
+      context: .
+    env_file:
+      - .env-non-dev
+    container_name: tutor_project
+    command: sh -c "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000"
+    ports:
+      - "8008:8000"
+    depends_on:
+      - db
+
+#  test:
+#    build:
+#      context: .
+#    env_file:
+#      - .env-non-dev
+#    command: pytest
+#    depends_on:
+#      - app

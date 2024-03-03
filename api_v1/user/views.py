@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import EmailStr
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -52,12 +52,17 @@ async def get_subjects_by_user(
     response_model=list[ReadProfile],
 )
 async def show_all_tutor_by_subject(
+    page: int = Query(ge=0, default=0),
+    size: int = Query(ge=1, le=100, default=10),
     subject: Subject = Depends(get_subject),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ) -> list[ReadProfile]:
     """Получение профилей репетиторов по определенному предмету"""
     return await crud.show_all_tutor_by_subject(
-        session=session, subject_name=subject.name
+        session=session,
+        subject_name=subject.name,
+        page=page,
+        size=size,
     )
 
 
