@@ -17,19 +17,22 @@
 - Redis
 - Celery
 - Git
+- Docker
 
-## Запуск и тестирование
+## Запуск приложения:
 Клонируйте репозиторий на локальную машину:
 ```commandline
 $ git clone https://github.com/kolyaslow/freelance_tutor.git
 ```
-
+Выполните команды Docker.
+```docker
+$ sudo docker compose up
+```
 ## Реализованная функциональность
 - Регистрация пользователей с разными правами. [Реализация.](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/config.py#L29)
 - Подтверждение почты пользователя. [Реализация.](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/config.py#L40)
-- Работа с профилем(и) пользователя(ей) (профиль может создать только репетитор):
-  - CRUD (
-    [удаление](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/profile/views.py#L56),
+- Работа с профилем(ями) пользователя(ей) (профиль может создать только репетитор):
+  - CRUD ([удаление](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/profile/views.py#L56),
     [создание](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/profile/views.py#L20),
     [обновление](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/profile/views.py#L40),
     [чтение всего профиля](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/views.py#L54))
@@ -113,9 +116,9 @@ email_confirmation_code - код подтверждения email пользов
 |   pyproject.toml      # Зависимости проекта
 |
 +---alembic     # Модуль миграции БД
-+---api_v1      # Модуль API_V
++---api_v1      # Модуль API_V1
 |   |   schemas_confirmation_keys.py    # Pydentic схемы для таблицы confirmation_keys
-|   |   __init__.py                     # Инициализатор пакета, где все роутеры собираются для последуещего импорта в эеземпляр fastapi(app)
+|   |   __init__.py                     # Инициализатор пакета, где все роутеры собираются для последуещего импорта в экземпляр fastapi(app)
 |   |
 |   +---common  # Модуль с общими функциями необходимыми API
 |   |   |   crud.py                     # Модуль для взаимодействия с базой данных
@@ -151,7 +154,7 @@ email_confirmation_code - код подтверждения email пользов
 |   |   |   views.py
 |   |
 +---core
-|   |   config.py           # Конфигурация преокта в том числе бд
+|   |   config.py           # Конфигурация проекта, в том числе, бд
 |   |   db_helper.py        # Создание AsyncEngine, AsycSessionFactory
 |   |   __init__.py
 |   |
@@ -162,7 +165,7 @@ email_confirmation_code - код подтверждения email пользов
 |   |   |   order.py
 |   |   |   profile.py
 |   |   |   subject.py
-|   |   |   subject_user_association.py     # Таблица для связи многие ко многим между таблицами subject и user
+|   |   |   subject_user_association.py     # Таблица для связи "многие-ко-многим" между таблицами subject и user
 |   |   |   user.py
 |   |   |   __init__.py                     # Инициализация всех элементов для работы с БД через SQLalchemy.
 +---tests   # Модуль с тестами проекта
@@ -171,7 +174,7 @@ email_confirmation_code - код подтверждения email пользов
 |   |
 |   +---common
 |   |   |   base_request_api.py     # Модуль формирования и оправки тестовых запросов
-|   |   |   fixture_profile_management.py       # Модуль фикстур отвечающих за управление профилем
+|   |   |   fixture_profile_management.py       # Модуль фикстур, отвечающих за управление профилем
 |   |   |   subject_fixture.py
 |   |   |   user_authentication_fixture.py      # Модуль аутентификации пользователей с разными правами
 |   |   |   __init__.py
@@ -194,6 +197,19 @@ email_confirmation_code - код подтверждения email пользов
 |   |
 ```
 </details>
+
+<details>
+
+<summary>Описание API</summary>
+
+После запуска интерактивная документация доступна по адресу:
+```
+http://127.0.0.1:8008/docs#/
+```
+Реализовано через OpenAPI(Swagger)
+
+</details>
+
 
 ## Автор
 **Николай Пышенко**
