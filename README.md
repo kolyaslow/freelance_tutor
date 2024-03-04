@@ -3,7 +3,8 @@
 ## Оглавление
 
 1. [Используемый стек технологий](#используемый-стек-технологий)
-2. [Запуск и тестирование](#запуск-и-тестирование)
+2. [Запуск](#запуск)
+3. [Тестирование](#тестирование)
 3. [Реализованная функциональность](#реализованная-функциональность)
 4. [Документация](#Документация)
 5. [Автор](#автор)
@@ -19,7 +20,7 @@
 - Git
 - Docker
 
-## Запуск приложения:
+## Запуск:
 Клонируйте репозиторий на локальную машину:
 ```commandline
 $ git clone https://github.com/kolyaslow/freelance_tutor.git
@@ -28,6 +29,13 @@ $ git clone https://github.com/kolyaslow/freelance_tutor.git
 ```docker
 $ sudo docker compose up
 ```
+
+## Тестирование:
+Выполните команды Docker.
+```docker
+$ sudo docker compose exec app pytest -s -v
+```
+
 ## Реализованная функциональность
 - Регистрация пользователей с разными правами. [Реализация.](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/config.py#L29)
 - Подтверждение почты пользователя. [Реализация.](https://github.com/kolyaslow/freelance_tutor/blob/master/api_v1/user/config.py#L40)
