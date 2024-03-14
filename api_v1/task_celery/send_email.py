@@ -5,8 +5,10 @@ from random import random
 
 from fastapi import HTTPException, status
 
-from api_v1.task_selery.config import email_data
+from api_v1.task_celery.config import settings
 from core.models import User
+
+from .config import celery
 
 logger = logging.getLogger(__name__)
 
@@ -20,17 +22,18 @@ def generate_random_code(length=4):
     return password
 
 
+@celery.task
 def send_email(
     user: User,
     message: str,
     subject: str,
 ):
-    sender = email_data.SENDER_EMAIL
-    password = email_data.PASSWORD_EMAIL
+    sender = settings.email.SENDER_EMAIL
+    password = settings.email.PASSWORD_EMAIL
 
     server = smtplib.SMTP(
-        email_data.smtp_host,
-        email_data.port,
+        settings.email.smtp_host,
+        settings.email.port,
     )
     server.starttls()
 

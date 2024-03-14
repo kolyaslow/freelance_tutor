@@ -11,7 +11,7 @@ from fastapi_users.authentication import (
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api_v1.schemas_confirmation_keys import CreateConfirmationKeys
-from api_v1.task_selery.send_email import generate_random_code, send_email
+from api_v1.task_celery.send_email import generate_random_code, send_email
 from core.config import settings
 from core.db_helper import db_helper
 from core.models import ConfirmationKeys
@@ -21,7 +21,7 @@ from ..common import crud as common_crud
 from . import crud as user_crud
 
 if TYPE_CHECKING:
-    from core.models import User
+    from src.core.models import User
 
 
 logger = logging.getLogger(__name__)
@@ -49,7 +49,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         )
 
         try:
-            send_email(user=user, message=message, subject="Подтверждение почты")
+            send_email.delay(user=user, message=message, subject="Подтверждение почты")
             logger.info(f"Successful sending of an email to a user: {user.email}")
 
             async with db_helper.session_factory() as session:

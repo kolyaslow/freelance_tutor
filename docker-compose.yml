@@ -22,11 +22,18 @@ services:
     depends_on:
       - db
 
-#  test:
-#    build:
-#      context: .
-#    env_file:
-#      - .env-non-dev
-#    command: pytest
-#    depends_on:
-#      - app
+
+  redis:
+    image: redis:7
+    container_name: redis_app
+
+
+  celery:
+    build:
+      context: .
+    env_file:
+      - .env-non-dev
+    container_name: celery_app
+    command: celery --app=api_v1.task_celery.config:celery worker -l INFO
+    depends_on:
+      - redis
