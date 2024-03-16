@@ -1,10 +1,8 @@
-from typing import Sequence
-
-from sqlalchemy import Result, delete, select
+from sqlalchemy import Result, desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload
 
-from core.models import ConfirmationKeys, Profile, Subject, User
+from core.models import Profile, Subject, User
 
 
 async def add_subjects_by_user(
@@ -36,19 +34,37 @@ async def get_subjects_by_user(
 
 
 async def show_all_tutor_by_subject(
+    price_sorting: bool,
+    rating_sorting: bool,
     session: AsyncSession,
     subject_name: str,
     page: int,
     size: int,
 ):
+    """
+    Получение всех репетиторов, которые могут вести предмет.
+    Можно сортировать по следующим параметрам:
+    - Цена, если price_sorting=True, то сортировка по возрастанию цены
+    - Рейтинг, если rating_sorting=True, то сортировка по возрастанию цены
+
+    По дефолту price_sorting и rating_sorting = True, и сортировка происходит,
+    вначале по цене, потом по рейтингу.
+
+    """
     offset_min = page * size
     offset_max = (page + 1) * size
 
+    order_by_rating = Profile.rating if rating_sorting else desc(Profile.rating)
+    order_by_price = Subject.price if price_sorting else desc(Subject.price)
     stmt = (
         select(Profile.fullname, Profile.description)
         .join(User.subjects)
         .join(User.profile)
         .where(Subject.name == subject_name)
+        .order_by(
+            order_by_price,
+            order_by_rating,
+        )
         .offset(offset_min)
         .limit(offset_max - offset_min + 1)
     )

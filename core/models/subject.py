@@ -21,6 +21,7 @@ class Subject(Base):
         ),
     )
 
+    price: Mapped[int] = mapped_column(default=0, nullable=True)
     users: Mapped[list["User"]] = relationship(
         back_populates="subjects",
         secondary="subject_user_association",

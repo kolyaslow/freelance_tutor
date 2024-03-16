@@ -1,3 +1,4 @@
+from sqlalchemy import Float
 from sqlalchemy.orm import Mapped, mapped_column
 
 from .base import Base
@@ -10,5 +11,10 @@ class Profile(Base, UserRelationMixin):
 
     fullname: Mapped[str | None]
     description: Mapped[str | None]
+    rating: Mapped[float] = mapped_column(
+        Float,
+        default=5,
+        server_default="5",
+    )
 
     balance: Mapped[float] = mapped_column(default=0)
