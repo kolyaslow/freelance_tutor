@@ -827,4 +827,3 @@ id_order: int - id заказа
 - email: pysenkon@gmail.com
 - Telegram: [@koliaslow](https://t.me/koliaslow)
 - VK: [@koliaslow](https://vk.com/koliaslow)
-<pre>    Текст с отступом
