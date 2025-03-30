@@ -15,7 +15,7 @@ loger = logging.getLogger(__name__)
 
 class BaseSettingsApp(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=Path(__file__).parent.parent / ".env",
+        env_file=Path(__file__).parent.parent / ".env-non-dev",
         extra="ignore",
     )
 

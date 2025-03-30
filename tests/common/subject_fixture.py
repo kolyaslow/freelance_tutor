@@ -33,3 +33,5 @@ async def add_subject_by_tutor(register_tutor, create_subject: Subject):
         await crud_user.add_subjects_by_user(
             session=session, subjects=subject_names, user_id=user_id
         )
+
+
